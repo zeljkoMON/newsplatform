@@ -30,7 +30,7 @@ class News
      */
     protected $author;
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     protected $date;
 

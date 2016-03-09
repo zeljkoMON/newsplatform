@@ -1,4 +1,36 @@
 {# app/Resources/views/default/news.html.twig #}
 {{ form_start(form) }}
-{{ form_widget(form) }}
+    {{ form_errors(form) }}
+
+<div>
+    {{ form_label(form.author) }}
+    {{ form_errors(form.author) }}
+    {{ form_widget(form.author) }}
+</div>
+
+<div>
+    {{ form_label(form.title) }}
+    {{ form_errors(form.title) }}
+    {{ form_widget(form.title) }}
+</div>
+
+<div>
+    {{ form_label(form.text) }}
+    {{ form_errors(form.text) }}
+    {{ form_widget(form.text, { 'attr': {
+        'rows' : '30',
+        'cols' : '30' }} ) }}
+</div>
+
+<div>
+    {{ form_label(form.date) }}
+    {{ form_errors(form.date) }}
+    {{ form_widget(form.date) }}
+</div>
+
+
+<div>
+    {{ form_widget(form.save) }}
+</div>
+
 {{ form_end(form) }}

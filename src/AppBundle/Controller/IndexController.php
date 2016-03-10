@@ -18,7 +18,9 @@ class IndexController extends Controller
         $em = $this->getDoctrine()->getManager();
         $news = $em->getRepository('AppBundle:News')
             ->findLastEntries(10);
-
+        for ($i = 0; $i <= (count($news)); $i++) {
+            $result[$i] = 0;
+        }
         return $this->render('index/index.html.twig', array(
             'newslist' => $news));
 

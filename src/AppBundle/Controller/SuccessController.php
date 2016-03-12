@@ -14,4 +14,10 @@ class SuccessController extends Controller
         return new Response(
             '<html><body>' . 'SUCCESS!!!' . '</body></html>');
     }
+
+    public function notLoggedAction()
+    {
+        return new Response(
+            '<html><body>' . 'You need to login' . '</body></html>');
+    }
 }

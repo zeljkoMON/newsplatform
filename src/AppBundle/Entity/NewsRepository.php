@@ -30,7 +30,7 @@ class NewsRepository extends EntityRepository
             ->createQuery('SELECT n FROM AppBundle:News n
             WHERE n.date > :startdate AND n.date < :enddate
             ORDER BY n.id ASC')
-            ->setParameter('startdate', $startdate, 'enddate', $enddate)
+            ->setParameters(array('startdate' => $startdate, 'enddate' => $enddate))
             ->getResult();
     }
 

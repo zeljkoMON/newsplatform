@@ -4,3 +4,9 @@ app:
 success:
     pattern: /success
     defaults: { _controller: AppBundle:Success:success }
+add:
+    pattern: /add
+    defaults: { _controller: AppBundle:AddNews:addNews }
+notlogged:
+    pattern: /notlogged
+    defaults: { _controller: AppBundle:Success:notLogged }

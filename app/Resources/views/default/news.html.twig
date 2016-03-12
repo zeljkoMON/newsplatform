@@ -1,11 +1,13 @@
 {# app/Resources/views/default/news.html.twig #}
+<center>
+    Welcome {{ username }}!!!
 {{ form_start(form) }}
     {{ form_errors(form) }}
 
 <div>
     {{ form_label(form.author) }}
     {{ form_errors(form.author) }}
-    {{ form_widget(form.author) }}
+    {{ form_widget(form.author, { 'attr':{'readonly':'readonly'} }) }}
 </div>
 
 <div>
@@ -34,3 +36,4 @@
 </div>
 
 {{ form_end(form) }}
+</center>

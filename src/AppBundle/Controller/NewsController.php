@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\News;
-use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -18,8 +17,8 @@ class NewsController extends Controller
         $news = $em->getRepository('AppBundle:News')
             ->findByAuthor($author);
 
-        return new Response(
-            '<html><body>' . var_dump($news) . '</body></html>');
+        return $this->render('index/index.html.twig', array(
+            'newslist' => $news));
 
     }
 
@@ -30,10 +29,10 @@ class NewsController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $news = $em->getRepository('AppBundle:News')
-            ->findLastEntries(10);
+            ->findLastEntries(5);
 
 
-        return new Response(
-            '<html><body>' . var_dump($news) . '</body></html>');
+        return $this->render('index/index.html.twig', array(
+            'newslist' => $news));
     }
 }

@@ -19,7 +19,12 @@ class AddNewsController extends Controller
     public function addNewsAction(Request $request)
     {
         $news = new News();
-        $news->setAuthor('Zika Zikic');
+        if (isset($_COOKIE['username'])) {
+            $news->setAuthor($_COOKIE['username']);
+        } else {
+            $news->setAuthor('Zika Zikic');
+        }
+
         $news->setTitle('Novi Naslov');
         $news->setText('Dummy text to be displayed');
         $news->setDate(new \DateTime('today'));
@@ -35,14 +40,19 @@ class AddNewsController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->getRepository('AppBundle:News')
-                ->writeNews($news);
+            if (isset($_COOKIE['username'])) {
+                $em = $this->getDoctrine()->getManager();
+                $em->getRepository('AppBundle:News')
+                    ->writeNews($news);
+                return $this->redirectToRoute('success');
+            } else {
+                return $this->redirectToRoute('notlogged');
+            }
 
-            return $this->redirectToRoute('success');
+
         }
 
         return $this->render('default/news.html.twig', array(
-            'form' => $form->createView()));
+            'form' => $form->createView(), 'username' => $_COOKIE['username']));
     }
 }

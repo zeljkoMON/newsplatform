@@ -9,7 +9,7 @@
             </textarea>
         </div>
         <div>
-            <a href="/edit-news/{{ value.id }}"> Edit </a>
+            <a href="/edit-news/{{ value.id }}"> Edit </a> {{ value.date|date('d-m-Y') }}
         </div>
     {% endfor %}
 </center>

@@ -3,13 +3,12 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Users;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use AppBundle\Form\Type\UserType;
 
 class LoginController extends Controller
 {
@@ -23,11 +22,9 @@ class LoginController extends Controller
         $userform->setPassword('sifra');
         $userform->setAdmin(false);
 
-        $form = $this->createFormBuilder($userform)
-            ->add('username', TextType::class)
-            ->add('password', PasswordType::class)
-            ->add('login', SubmitType::class, array('label' => 'Login'))
-            ->getForm();
+        $form = $this->createForm(new UserType(), $userform)
+            ->add('login', SubmitType::class, array('label' => 'Login'));
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -35,7 +32,8 @@ class LoginController extends Controller
             $user = $emu->getRepository('AppBundle:Users')
                 ->findByUser($userform);
             if ($user <> null) {
-                setcookie('username', $user->getUsername(), time() + 3600);
+                $array = array('username' => $user->getUsername(), 'admin' => $user->getAdmin());
+                setcookie('values', serialize($array), time() + 3600);
                 return $this->redirectToRoute('user-panel');
             } else {
                 return $this->redirectToRoute('notlogged');
@@ -51,28 +49,24 @@ class LoginController extends Controller
      */
     public function editPasswordAction(Request $request)
     {
-        if (isset($_COOKIE['username'])) {
-            $username = $_COOKIE['username'];
-            $formArray = array('username' => $username);
-            $form = $this->createFormBuilder($formArray)
-                ->add('username', TextType::class)
-                ->add('password', PasswordType::class)
-                ->add('newpass', PasswordType::class)
-                ->add('confirmpass', PasswordType::class)
-                ->add('changepass', SubmitType::class, array('label' => 'Change password'))
-                ->getForm();
+        if (isset($_COOKIE['value'])) {
+            $array = unserialize($_COOKIE['value']);
+            $username = $array['username'];
+            $user = new Users();
+            $user->setUsername($username);
+            $form = $this->createForm(new UserType(), $user)
+                ->add('newpass', PasswordType::class, array('mapped' => false))
+                ->add('confirmpass', PasswordType::class, array('mapped' => false))
+                ->add('changepass', SubmitType::class, array('label' => 'Change password'));
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $data = $form->getData();
-                $password = $data['password'];
-                $newpass = $data['newpass'];
-                $confirmpass = $data['confirmpass'];
 
-                $user = new Users();
-                $user->setUsername($username);
+                $password = $user->getPassword();
+                $newpass = $form->get('newpass')->getData();
+                $confirmpass = $form->get('confirmpass')->getData();;
+
                 $user->setPassword($password);
-
 
                 $em = $this->getDoctrine()->getManager();
                 $user = $em->getRepository('AppBundle:Users')

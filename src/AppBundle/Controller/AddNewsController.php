@@ -4,13 +4,11 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\News;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-
+use AppBundle\Form\Type\NewsType;
 
 class AddNewsController extends Controller
 {
@@ -20,35 +18,27 @@ class AddNewsController extends Controller
     public function addNewsAction(Request $request)
     {
         $news = new News();
-        if (isset($_COOKIE['username'])) {
-            $news->setAuthor($_COOKIE['username']);
-            $username = $_COOKIE['username'];
-        } else {
-            $news->setAuthor('Zika Zikic');
-            $username = 'Guest';
-        }
+        if (isset($_COOKIE['values'])) {
+            $array = unserialize($_COOKIE['values']);
+            $username = $array['username'];
+            $news->setAuthor($username);
+        } else return $this->redirectToRoute('notlogged');
 
         $news->setTitle('Novi Naslov');
         $news->setText('Dummy text to be displayed');
         $news->setDate(new \DateTime('today'));
 
-        $form = $this->createFormBuilder(new NewsType(), $news)
-            ->add('save', SubmitType::class, array('label' => 'Create News'))
-            ->getForm();
-
+        $form = $this->createForm(new NewsType(), $news)
+            ->add('save', SubmitType::class, array('label' => 'Create News'));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if (isset($_COOKIE['username'])) {
+            if (isset($_COOKIE['values'])) {
                 $em = $this->getDoctrine()->getManager();
                 $em->getRepository('AppBundle:News')
                     ->writeNews($news);
                 return $this->redirectToRoute('user-panel');
-            } else {
-                return $this->redirectToRoute('notlogged');
-            }
-
-
+            } else return $this->redirectToRoute('notlogged');
         }
 
         return $this->render('default/news.html.twig', array(
@@ -58,10 +48,11 @@ class AddNewsController extends Controller
     /**
      * @Route("/edit-news")
      */
-    public function editNewsAction(Request $request)
+    public function editNewsAction()
     {
-        if (isset($_COOKIE['username'])) {
-            $username = $_COOKIE['username'];
+        if (isset($_COOKIE['values'])) {
+            $array = unserialize($_COOKIE['values']);
+            $username = $array['username'];
             $newslist = $this->getDoctrine()->getManager()
                 ->getRepository('AppBundle:News')
                 ->findByAuthor($username);
@@ -77,19 +68,14 @@ class AddNewsController extends Controller
      */
     public function editNews(Request $request, $id)
     {
-        if (isset($_COOKIE['username'])) {
-            //$id=27;
+        if (isset($_COOKIE['value'])) {
             $news = $this->getDoctrine()->getManager()
                 ->getRepository('AppBundle:News')
                 ->find($id);
 
-            $form = $this->createFormBuilder($news)
-                ->add('title', TextType::class)
-                ->add('text', TextType::class)
-                ->add('date', DateType::class)
+            $form = $this->createForm(new NewsType(), $news)
                 ->add('edit', SubmitType::class, array('label' => 'edit'))
-                ->add('delete', SubmitType::class, array('label' => 'delete'))
-                ->getForm();
+                ->add('delete', SubmitType::class, array('label' => 'delete'));
             $form->handleRequest($request);
 
             if ($form->isValid()) {

@@ -1,6 +1,12 @@
 <center>
     {{ form_start(form) }}
     {{ form_errors(form) }}
+    <div>
+        { 'attr':{'readonly':'readonly'}}
+        {{ form_label(form.author) }}
+        {{ form_errors(form.author) }}
+        {{ form_widget(form.author, { 'attr':{'readonly':'readonly'}}) }}
+    </div>
 
     <div>
         {{ form_label(form.title) }}

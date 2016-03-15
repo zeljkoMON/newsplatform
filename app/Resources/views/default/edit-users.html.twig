@@ -1,0 +1,10 @@
+{% for key,value in userlist %}
+    <div>
+        {{ value.title }}
+    </div>
+    <div>
+           <textarea rows="4" cols="50">
+               {{ value.username }}
+           </textarea>
+    </div>
+{% endfor %}

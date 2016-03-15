@@ -11,7 +11,10 @@ class SuccessController extends Controller
 {
     public function userPanelAction()
     {
-        return $this->render('default/user-panel.html.twig');
+        $array = unserialize($_COOKIE['values']);
+        //$username = $array['username'];
+        $admin = $array['admin'];
+        return $this->render('default/user-panel.html.twig', array('admin' => $admin));
     }
 
     public function notLoggedAction()

@@ -24,4 +24,11 @@ class UsersRepository extends EntityRepository
             ->flush();
         return true;
     }
+
+    public function getAllUsers()
+    {
+        return $this->getEntityManager()
+            ->createQuery('SELECT u FROM AppBundle:Users u')
+            ->getResult();
+    }
 }

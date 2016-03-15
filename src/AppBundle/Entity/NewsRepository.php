@@ -19,7 +19,7 @@ class NewsRepository extends EntityRepository
         return $this->getEntityManager()
             ->createQuery('SELECT n FROM AppBundle:News n
             WHERE n.author = :author
-            ORDER BY n.id ASC')
+            ORDER BY n.id DESC')
             ->setParameter('author', $autor)
             ->getResult();
     }
@@ -55,5 +55,23 @@ class NewsRepository extends EntityRepository
         $em->persist($news);
         $em->flush();
 
+    }
+
+    public function updateNews(News $news)
+    {
+        $this->getEntityManager()
+            ->merge($news);
+        $this->getEntityManager()
+            ->flush();
+        return true;
+    }
+
+    public function removeNews(News $news)
+    {
+        $this->getEntityManager()
+            ->remove($news);
+        $this->getEntityManager()
+            ->flush();
+        return true;
     }
 }

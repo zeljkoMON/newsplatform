@@ -9,10 +9,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SuccessController extends Controller
 {
-    public function successAction()
+    public function userPanelAction()
     {
-        return new Response(
-            '<html><body>' . 'SUCCESS!!!' . '</body></html>');
+        return $this->render('default/user-panel.html.twig');
     }
 
     public function notLoggedAction()

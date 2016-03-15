@@ -1,14 +1,6 @@
-{# app/Resources/views/default/news.html.twig #}
 <center>
-    Welcome {{ username }}!!!
     {{ form_start(form) }}
     {{ form_errors(form) }}
-
-    <div>
-        {{ form_label(form.author) }}
-        {{ form_errors(form.author) }}
-        {{ form_widget(form.author, { 'attr':{'readonly':'readonly'} }) }}
-    </div>
 
     <div>
         {{ form_label(form.title) }}
@@ -27,12 +19,11 @@
     <div>
         {{ form_label(form.date) }}
         {{ form_errors(form.date) }}
-        {{ form_widget(form.date) }}
+        {{ form_widget(form.date, { 'attr':{'readonly':'readonly'}}) }}
     </div>
 
-
     <div>
-        {{ form_widget(form.save) }}
+        {{ form_widget(form.edit) }} {{ form_widget(form.delete) }}
     </div>
 
     {{ form_end(form) }}

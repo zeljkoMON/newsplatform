@@ -13,7 +13,15 @@ class UsersRepository extends EntityRepository
             ->createQuery('SELECT u FROM AppBundle:Users u
             WHERE u.username = :uname AND u.password = :pass ')
             ->setParameters(array('uname' => $user->getUsername(), 'pass' => $user->getPassword()))
-            ->getResult();
+            ->getOneOrNullResult();
+    }
 
+    public function updateUser(Users $user)
+    {
+        $this->getEntityManager()
+            ->merge($user);
+        $this->getEntityManager()
+            ->flush();
+        return true;
     }
 }

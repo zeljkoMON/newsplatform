@@ -7,19 +7,12 @@ use Doctrine\ORM\EntityRepository;
 
 class NewsRepository extends EntityRepository
 {
-    public function findAllOrderedByName()
-    {
-        return $this->getEntityManager()
-            ->createQuery('SELECT n FROM AppBundle:News n ORDER BY n.id ASC')
-            ->getResult();
-    }
-
     public function findByAuthor($autor)
     {
         return $this->getEntityManager()
             ->createQuery('SELECT n FROM AppBundle:News n
             WHERE n.author = :author
-            ORDER BY n.id DESC')
+            ORDER BY n.date DESC')
             ->setParameter('author', $autor)
             ->getResult();
     }
@@ -29,7 +22,7 @@ class NewsRepository extends EntityRepository
         return $this->getEntityManager()
             ->createQuery('SELECT n FROM AppBundle:News n
             WHERE n.date > :startdate AND n.date < :enddate
-            ORDER BY n.id ASC')
+            ORDER BY n.date ASC')
             ->setParameters(array('startdate' => $startdate, 'enddate' => $enddate))
             ->getResult();
     }
@@ -73,5 +66,15 @@ class NewsRepository extends EntityRepository
         $this->getEntityManager()
             ->flush();
         return true;
+    }
+
+    public function findById($id)
+    {
+        return $this->getEntityManager()
+            ->createQuery('SELECT n FROM AppBundle:News n
+            WHERE n.id = :id
+            ORDER BY n.date DESC')
+            ->setParameter('id', $id)
+            ->getResult();
     }
 }

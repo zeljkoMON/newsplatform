@@ -1,0 +1,51 @@
+{% for key,value in newslist %}
+    <div>
+        <b>
+            {{ value.title }}
+        </b>
+    </div>
+    <table border="2" style="width:20%">
+        <tr>
+            <td>
+                {{ value.text }}
+            </td>
+        </tr>
+    </table>
+    <div>
+        Author: <a href="/authors/{{ value.author }}">{{ value.author }}</a> Date: {{ value.date|date('d-m-Y') }}
+        {% for key,vrednost in value.comment %}
+            <table border="0" style="width:15%">
+                <tr>
+                    <td>{{ vrednost.author }}:</td>
+                    <td>{{ vrednost.text }}</td>
+                </tr>
+            </table>
+        {% endfor %}
+    </div>
+{% endfor %}
+
+{{ form_start(form) }}
+    {{ form_errors(form) }}
+
+<div>
+    {{ form_label(form.author) }}
+    {{ form_errors(form.author) }}
+    {{ form_widget(form.author) }}
+</div>
+
+<div>
+    {{ form_label(form.text) }}
+    {{ form_errors(form.text) }}
+    {{ form_widget(form.text) }}
+</div>
+<div>
+    {{ form_label(form.date) }}
+    {{ form_errors(form.date) }}
+    {{ form_widget(form.date, { 'attr':{'readonly':'readonly'} }) }}
+</div>
+
+<div>
+    {{ form_widget(form.post) }}
+</div>
+
+{{ form_end(form) }}

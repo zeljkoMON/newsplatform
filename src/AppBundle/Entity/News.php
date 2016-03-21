@@ -4,6 +4,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use \Doctrine\Common\Collections\ArrayCollection;
 
 class News
     /**
@@ -33,13 +34,29 @@ class News
      * @ORM\Column(type="datetime")
      */
     protected $date;
+    /**
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="news", orphanRemoval=true, cascade={"remove", "persist"})
+     * @ORM\JoinColumn(name="id", referencedColumnName="news_id", onDelete="CASCADE")
+     */
+    protected $comments;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="news", cascade={"remove", "persist"})
+     * @ORM\JoinTable(name="tags_and_news")
+     */
+    protected $tags;
 
+    public function __construct()
+    {
+        $this->comments = new ArrayCollection();
+        $this->tags = new ArrayCollection();
+    }
     /**
      * Get id
      *
      * @return integer
      */
+
     public function getId()
     {
         return $this->id;
@@ -135,5 +152,83 @@ class News
         $this->date = $date;
 
         return $this;
+    }
+
+    /**
+     * Add comment
+     *
+     * @param \AppBundle\Entity\Comment $comment
+     * @return News
+     */
+    public function addComment(\AppBundle\Entity\Comment $comment)
+    {
+        $this->comments[] = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Remove comment
+     *
+     * @param \AppBundle\Entity\Comment $comment
+     */
+    public function removeComment(\AppBundle\Entity\Comment $comment)
+    {
+        $this->comments->removeElement($comment);
+    }
+
+    /**
+     * Get comment
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * Add tags
+     *
+     * @param \AppBundle\Entity\Tag $tags
+     * @return News
+     */
+    public function addTag(\AppBundle\Entity\Tag $tag)
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove tags
+     *
+     * @param \AppBundle\Entity\Tag $tags
+     */
+    public function removeTag(\AppBundle\Entity\Tag $tag)
+    {
+        $this->tags->removeElement($tag);
+    }
+
+    /**
+     * Get tags
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    public function removeAllTags()
+    {
+        $this->tags->clear();
+    }
+
+    public function removeAllComments()
+    {
+        $this->comments->clear();
     }
 }

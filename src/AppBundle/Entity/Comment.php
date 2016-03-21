@@ -64,7 +64,7 @@ class Comment
      * Set author
      *
      * @param string $author
-     * @return string
+     * @return Comment
      */
     public function setAuthor($author)
     {
@@ -87,7 +87,7 @@ class Comment
      * Set text
      *
      * @param string $text
-     * @return string
+     * @return Comment
      */
     public function setText($text)
     {

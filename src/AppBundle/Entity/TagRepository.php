@@ -20,4 +20,13 @@ class TagRepository extends EntityRepository
             $em->flush();
         }
     }
+
+    public function findByTag($tag)
+    {
+        return $this->getEntityManager()
+            ->createQuery('SELECT t FROM AppBundle:Tag t
+            WHERE t.tag = :tag')
+            ->setParameter('tag', $tag)
+            ->getOneOrNullResult();
+    }
 }

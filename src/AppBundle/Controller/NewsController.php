@@ -8,6 +8,7 @@ use AppBundle\Form\Type\CommentType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class NewsController extends Controller
 {
@@ -33,17 +34,18 @@ class NewsController extends Controller
         $em = $this->getDoctrine()->getManager();
         $newslist = $em->getRepository('AppBundle:News')
             ->findById($newsId);
+
         $news = $newslist[0];
         $comment = new Comment();
         $comment->setAuthor('Autor');
         $comment->setText('Text');
-        $comment->setDate(new \DateTime());
+        $comment->setDate(new \DateTime('now'));
         $comment->setNews($news);
 
         $form = $this->createForm(new CommentType(), $comment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $comment->setNews($news);
+
             $news->addComment($comment);
             $this->getDoctrine()->getManager()
                 ->persist($news);

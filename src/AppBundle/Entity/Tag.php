@@ -4,6 +4,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use \Doctrine\Common\Collections\ArrayCollection;
 
 class Tag
@@ -20,7 +21,9 @@ class Tag
      */
     protected $id;
     /**
-     * @ORM\Column(type="text")
+     * @var string $tag
+     *
+     * @ORM\Column(type="string", length=50, unique=true )
      */
     protected $tag;
     /**
@@ -67,4 +70,36 @@ class Tag
         return $this;
     }
 
+    /**
+     * Add news
+     *
+     * @param \AppBundle\Entity\News $news
+     * @return Tag
+     */
+    public function addNews(\AppBundle\Entity\News $news)
+    {
+        $this->news[] = $news;
+
+        return $this;
+    }
+
+    /**
+     * Remove news
+     *
+     * @param \AppBundle\Entity\News $news
+     */
+    public function removeNews(\AppBundle\Entity\News $news)
+    {
+        $this->news->removeElement($news);
+    }
+
+    /**
+     * Get news
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getNews()
+    {
+        return $this->news;
+    }
 }

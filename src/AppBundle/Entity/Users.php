@@ -18,7 +18,7 @@ class Users
      */
     protected $id;
     /**
-     * @ORM\Column(type="text",length=10)
+     * @ORM\Column(type="string",length=10, unique=true)
      */
     protected $username;
     /**

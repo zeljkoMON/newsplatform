@@ -10,3 +10,6 @@ parameters:
 services:
     app.simplefile:
         class: AppBundle\Utils\SimpleFile
+    app.addtags:
+        class:      AppBundle\Utils\AddTags
+        arguments: [ @doctrine.orm.entity_manager  ]

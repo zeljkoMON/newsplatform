@@ -22,8 +22,7 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Users'
-        ));
+            'data_class' => 'AppBundle\Entity\Users'));
     }
 
     public function getName()

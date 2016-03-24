@@ -4,11 +4,15 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\News;
+use AppBundle\Entity\Tag;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Form\Type\NewsType;
+use AppBundle\Utils\AddTags;
 
 class AddNewsController extends Controller
 {
@@ -29,14 +33,33 @@ class AddNewsController extends Controller
         $news->setDate(new \DateTime('today'));
 
         $form = $this->createForm(new NewsType(), $news)
-            ->add('save', SubmitType::class, array('label' => 'Create News'));
+            ->add('save', SubmitType::class, array('label' => 'Create News'))
+            ->add('tags', TextType::class, array('label' => 'Tags', 'mapped' => false));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             if (isset($_COOKIE['values'])) {
+
+                $news->setDate(new \DateTime('now'));
                 $em = $this->getDoctrine()->getManager();
-                $em->getRepository('AppBundle:News')
-                    ->writeNews($news);
+                $data = $form->get('tags')->getData();
+                $tags = explode(',', $data);
+                foreach ($tags as $value) {
+                    $tag = $em->getRepository('AppBundle:Tag')->findByTag($value);
+                    if ($tag <> null) {
+                        $news->addTag($tag);
+                    } else {
+                        $tag = new Tag();
+                        $tag->setTag($value);
+                        $em->persist($tag);
+                        $news->addTag($tag);
+                    }
+                }
+                $em->persist($news);
+                $em->flush();
+                //$add = new AddTags($em);
+                //$add->add($tags,$news);
+
                 return $this->redirectToRoute('user-panel');
             } else return $this->redirectToRoute('notlogged');
         }

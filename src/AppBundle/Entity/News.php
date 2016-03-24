@@ -1,5 +1,5 @@
 <?php
-// src/AppBundle/Entity/News.php
+// src/AppBundle/Entity/News
 
 namespace AppBundle\Entity;
 
@@ -41,7 +41,7 @@ class News
     protected $comments;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="news", cascade={"remove", "persist"})
+     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="news", cascade={"persist"})
      * @ORM\JoinTable(name="tags_and_news")
      */
     protected $tags;
@@ -195,7 +195,7 @@ class News
      */
     public function addTag(\AppBundle\Entity\Tag $tag)
     {
-        if (!$this->tags->contains($tag)) {
+        if (!($this->tags->contains($tag))) {
             $this->tags[] = $tag;
         }
 

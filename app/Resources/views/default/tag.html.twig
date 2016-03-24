@@ -1,15 +1,5 @@
 <center>
-    <div>
-        <a href="/login"> Login </a>
-    </div>
-    <div>
-        <a href="/search"> Search by author </a>
-    </div>
-    <div>
-        <a href="mailto:zeljko.nedeljkovic@gmail.com">Contact Me</a>
-    </div>
-
-    {% for key,value in newslist %}
+    {% for key,value in tagslist %}
         <div>
             <b>
                 <a href="/news/{{ value.id }}">{{ value.title }}</a>
@@ -23,12 +13,6 @@
             </tr>
         </table>
         <div>
-            <div>
-                Tags:
-                {% for key,tags in value.tags %}
-                    <a href="/tags/{{ tags.tag }}">{{ tags.tag }} </a>
-                {% endfor %}
-            </div>
             Author: <a href="/authors/{{ value.author }}">{{ value.author }}</a> Date: {{ value.date|date('d-m-Y') }}
             <div>
                 Comments:

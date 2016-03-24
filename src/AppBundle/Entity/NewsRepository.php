@@ -7,13 +7,13 @@ use Doctrine\ORM\EntityRepository;
 
 class NewsRepository extends EntityRepository
 {
-    public function findByAuthor($autor)
+    public function findByAuthor($author)
     {
         return $this->getEntityManager()
             ->createQuery('SELECT n FROM AppBundle:News n
             WHERE n.author = :author
             ORDER BY n.date DESC')
-            ->setParameter('author', $autor)
+            ->setParameter('author', $author)
             ->getResult();
     }
 
@@ -21,7 +21,7 @@ class NewsRepository extends EntityRepository
     {
         return $this->getEntityManager()
             ->createQuery('SELECT n FROM AppBundle:News n
-            WHERE n.date > :startdate AND n.date < :enddate
+            WHERE n.date => :startdate AND n.date <= :enddate
             ORDER BY n.date ASC')
             ->setParameters(array('startdate' => $startdate, 'enddate' => $enddate))
             ->getResult();

@@ -5,7 +5,6 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Tag;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class TagController extends Controller
@@ -15,7 +14,6 @@ class TagController extends Controller
      */
     public function tagAction($tag)
     {
-        $tagslist = new Tag();
         $em = $this->getDoctrine()->getRepository('AppBundle:Tag');
         $tagslist = $em->findByTag($tag);
 

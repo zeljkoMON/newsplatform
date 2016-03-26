@@ -6,7 +6,7 @@ notlogged:
     defaults: { _controller: AppBundle:Success:notLogged }
 user-panel:
     pattern: /user-panel
-    defaults: { _controller: AppBundle:Success:userPanel}
+    defaults: { _controller: AppBundle:Success:userPanel }
 edit-news:
     pattern: /edit-news
-    defaults: {_controller: AppBundle:AddNews:editNews}
+    defaults: { _controller: AppBundle:News:editById }

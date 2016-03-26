@@ -18,7 +18,7 @@ class CommentType extends AbstractType
         $builder
             ->add('author', TextType::class)
             ->add('text', TextType::class)
-            ->add('post', SubmitType::class, array('label' => 'Post'));
+            ->add('post', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

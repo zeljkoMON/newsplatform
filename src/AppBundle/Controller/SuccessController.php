@@ -20,7 +20,7 @@ class SuccessController extends Controller
         if (isset($_COOKIE['token'])) {
             $token = (new Parser())->parse((string)$_COOKIE['token']);
             if ($token->verify($signer, $secret)) {
-                $admin = 1;
+                $admin = $token->getClaim('admin');
                 return $this->render('default/user-panel.html.twig', array('admin' => $admin));
             }
         }

@@ -1,10 +1,12 @@
-{% for key,value in userlist %}
+{{ form_start(form) }}
+{% for user in form.users %}
     <div>
-        {{ value.title }}
+        user :{{ form_widget(user.username) }}
     </div>
     <div>
-           <textarea rows="4" cols="50">
-               {{ value.username }}
-           </textarea>
+        admin: {{ form_widget(user.admin) }}
     </div>
+
 {% endfor %}
+{{ form_widget(form.submit) }}
+{{ form_end(form) }}

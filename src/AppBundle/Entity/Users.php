@@ -18,17 +18,25 @@ class Users
      */
     protected $id;
     /**
-     * @ORM\Column(type="string",length=10, unique=true)
+     * @ORM\Column(type="string", length=12, unique=true)
      */
     protected $username;
     /**
-     * @ORM\Column(type="text",length=10)
+     * @ORM\Column(type="string", length=64)
      */
     protected $password;
+    /**
+     * @ORM\Column(type="string", length=64)
+     */
+    protected $salt;
     /**
      * @ORM\Column(type="boolean")
      */
     protected $admin;
+    /**
+     * @ORM\Column(type="string", length=64, unique=true)
+     */
+    protected $email;
 
     /**
      * Get username
@@ -107,5 +115,62 @@ class Users
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get salt
+     *
+     * @return string
+     */
+    public function getSalt()
+    {
+        return $this->salt;
+    }
+
+    /**
+     * Set salt
+     *
+     * @param string $salt
+     * @return Users
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     * @return Users
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function copyPendingUser(PendingUser $pendingUser)
+    {
+        $this->setUsername($pendingUser->getUsername());
+        $this->setPassword($pendingUser->getPassword());
+        $this->setEmail($pendingUser->getEmail());
+        $this->setSalt($pendingUser->getSalt());
+        $this->setAdmin(0);
+
+        return $this;
     }
 }

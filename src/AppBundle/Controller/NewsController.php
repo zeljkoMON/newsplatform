@@ -14,8 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Form\Type\NewsType;
-use Lcobucci\JWT\Signer\Hmac\Sha256;
-use Lcobucci\JWT\Parser;
+use AppBundle\Utils\TokenAuthenticator;
 
 class NewsController extends Controller
 {
@@ -24,22 +23,15 @@ class NewsController extends Controller
      */
     public function addNewsAction(Request $request)
     {
-        $signer = new Sha256();
         $secret = $this->container->getParameter('secret');
-        $authenticated = false;
-
-        if (isset($_COOKIE['token'])) {
-            $token = (new Parser())->parse((string)$_COOKIE['token']);
-            if ($token->verify($signer, $secret)) {
-                $authenticated = true;
-            }
-        }
+        $cookie = 'token';
+        $authenticator = new TokenAuthenticator($secret, $cookie);
+        $authenticated = $authenticator->isAuthenticated();
 
         $news = new News();
 
         if ($authenticated) {
-
-            $username = $token->getClaim('user');
+            $username = $authenticator->getUser();
             $news->setAuthor($username);
         } else return $this->redirectToRoute('notlogged');
 
@@ -85,20 +77,13 @@ class NewsController extends Controller
      */
     public function editNewsAction()
     {
-        $signer = new Sha256();
         $secret = $this->container->getParameter('secret');
-        $authenticated = false;
-
-        if (isset($_COOKIE['token'])) {
-            $token = (new Parser())->parse((string)$_COOKIE['token']);
-            if ($token->verify($signer, $secret)) {
-                $authenticated = true;
-            }
-        }
+        $cookie = 'token';
+        $authenticator = new TokenAuthenticator($secret, $cookie);
+        $authenticated = $authenticator->isAuthenticated();
 
         if ($authenticated) {
-            ;
-            $username = $token->getClaim('user');
+            $username = $authenticator->getUser();
             $newslist = $this->getDoctrine()->getManager()
                 ->getRepository('AppBundle:News')
                 ->findByAuthor($username);
@@ -113,24 +98,19 @@ class NewsController extends Controller
      */
     public function editByIdAction(Request $request, $id)
     {
-        $signer = new Sha256();
         $secret = $this->container->getParameter('secret');
-        $authenticated = false;
+        $cookie = 'token';
+        $authenticator = new TokenAuthenticator($secret, $cookie);
+        $authenticated = $authenticator->isAuthenticated();
+        $admin = $authenticator->isAdmin();
 
-        if (isset($_COOKIE['token'])) {
-            $token = (new Parser())->parse((string)$_COOKIE['token']);
-            if ($token->verify($signer, $secret)) {
-                $authenticated = true;
-                $admin = $token->getClaim('admin');
-            }
-        }
         if ($authenticated) {
             $news = $this->getDoctrine()->getManager()
                 ->getRepository('AppBundle:News')
                 ->find($id);
             $em = $this->getDoctrine()->getManager();
 
-            $form = $this->createForm(new NewsType(), $news)
+            $form = $this->createForm(NewsType::class, $news)
                 ->add('edit', SubmitType::class, array('label' => 'edit'))
                 ->add('delete', SubmitType::class, array('label' => 'delete'))
                 ->add('comments', CollectionType::class, array('entry_type' => CommentType::class));
@@ -195,10 +175,9 @@ class NewsController extends Controller
         $comment->setDate(new \DateTime('now'));
         $comment->setNews($news);
 
-        $form = $this->createForm(new CommentType(), $comment);
+        $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             $news->addComment($comment);
             $this->getDoctrine()->getManager()
                 ->persist($news);

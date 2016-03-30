@@ -3,15 +3,19 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AppBundle\Entity\Users;
+use AppBundle\Utils\JwtToken;
+use AppBundle\Form\Type\UserType;
+use Lcobucci\JWT\Signer\Hmac\Sha256;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use AppBundle\Entity\News;
-use AppBundle\Form\Type\NewsType;
-use AppBundle\Form\Type\CommentType;
+use AppBundle\Form\Type\EditUserType;
+use Lcobucci\JWT\Parser;
 
 class TestController extends Controller
 {
@@ -20,25 +24,19 @@ class TestController extends Controller
      */
     public function testAction(Request $request)
     {
-        $news = $this->getDoctrine()->getManager()
-            ->getRepository('AppBundle:News')
-            ->find(42);
+        $signer = new Sha256();
 
-        $form = $this->createForm(NewsType::class, $news)
-            ->add('edit', ButtonType::class, array('label' => 'edit'))
-            ->add('delete', ButtonType::class, array('label' => 'delete'))
-            ->add('comments', CollectionType::class, array('entry_type' => CommentType::class));
+        $secret = $this->container->getParameter('secret');
+        if (isset($_COOKIE['token'])) {
+            $token = (new Parser())->parse((string)$_COOKIE['token']);
 
-        $form->handleRequest($request);
-        foreach ($form->get('comments') as $entry) {
-            $toRemove = $entry->get('remove')->isClicked();
-            if ($toRemove) {
-                return new Response(
-                    '<html><body>' . 'You need to login' . '</body></html>');
-            }
+            return new Response(
+                '<html><body>' . var_dump(strlen($_COOKIE['token'])) . '</body></html>');
         }
-        return $this->render('default/news-editor.html.twig', array(
-            'form' => $form->createView()));
-    }
 
+
+        return $this->render('default/test.html.twig', array(
+            'form' => $form->createView()));
+
+    }
 }

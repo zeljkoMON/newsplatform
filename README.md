@@ -1,4 +1,1 @@
-.checkout
-=========
-
-A Symfony project created on March 3, 2016, 1:01 pm.
+Simple news portal. Design to show news, tag them and search both by tag and author.

@@ -79,7 +79,9 @@ class Users
      */
     public function setPassword($password)
     {
-        $this->password = $password;
+        $salt = $this->salt;
+        $passwordHash = hash('sha256', $password . $salt);
+        $this->password = $passwordHash;
 
         return $this;
     }

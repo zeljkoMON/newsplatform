@@ -53,11 +53,11 @@ class AccountController extends Controller
                     if ($user->getPassword() == $oldPasswordHash) {
                         if ($newpass <> '' && $newpass == $confirmpass) {
                             $salt = bin2hex(openssl_random_pseudo_bytes(32));
-                            $passwordHash = hash('sha256', $newpass . $salt);
-                            $user->setPassword($passwordHash);
                             $user->setSalt($salt);
+                            $user->setPassword($newpass);
                             $em->getRepository('AppBundle:Users')
                                 ->updateUser($user);
+
                             return $this->redirectToRoute('user-panel');
                         } else return new Response('<html><body>' . "Password did't match" . '</body></html>');
 

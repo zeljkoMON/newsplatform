@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" serverName="d:\install\git\sajt" uploadOnCheckin="4cbcca3f-a8b0-4089-a803-4e12d443f1b2">
+    <serverData>
+      <paths name="d:\install\git\sajt">
+        <serverdata>
+          <mappings>
+            <mapping deploy="\" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myUploadOnCheckinName" value="d:\install\git\sajt" />
+  </component>
+</project>

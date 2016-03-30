@@ -5,7 +5,6 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\PendingUser;
 use AppBundle\Entity\Users;
-use AppBundle\Utils\CopyUser;
 use AppBundle\Utils\JwtToken;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -25,25 +24,26 @@ class CreateAccountController extends Controller
 {
     /**
      * @Route("/create-account")
+     * @param Request $request
+     * @return Response
      */
     public function createAction(Request $request)
     {
-        //$token = new JwtToken($username, $secret, $admin, $time);
         $user = new PendingUser();
         $form = $this->createFormBuilder($user)
             ->add('username', TextType::class)
             ->add('email', EmailType::class)
-            ->add('confirmemail', EmailType::class, array('mapped' => false))
+            ->add('confirmEmail', EmailType::class, array('mapped' => false))
             ->add('password', PasswordType::class)
-            ->add('confirmpass', PasswordType::class, array('mapped' => false))
+            ->add('confirmPass', PasswordType::class, array('mapped' => false))
             ->add('submit', SubmitType::class)
             ->getForm();
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($form->get('email')->getData() == $form->get('confirmemail')->getData()) {
-                if ($form->get('password')->getData() == $form->get('confirmpass')->getData()) {
+            if ($form->get('email')->getData() == $form->get('confirmEmail')->getData()) {
+                if ($form->get('password')->getData() == $form->get('confirmPass')->getData()) {
                     $em = $this->getDoctrine()->getManager();
 
                     $username = $user->getUsername();
@@ -51,12 +51,10 @@ class CreateAccountController extends Controller
 
                     $secret = $this->container->getParameter('secret');
                     $token = new JwtToken($username, $secret, 0, 600);
-                    $salt = bin2hex(openssl_random_pseudo_bytes(32));
-                    $passwordHash = hash('sha256', $password . $salt);
-
+                    $user->createNewSalt();
+                    $user->setPassword($password);
                     $user->setToken($token->getString());
-                    $user->setPassword($passwordHash);
-                    $user->setSalt($salt);
+
                     if (!($em->getRepository('AppBundle:Users')
                         ->mailExists($user->getEmail()))
                     ) {
@@ -84,6 +82,8 @@ class CreateAccountController extends Controller
 
     /**
      * @Route("/activation/{token}")
+     * @param $token
+     * @return Response
      */
     public function activateAction($token)
     {

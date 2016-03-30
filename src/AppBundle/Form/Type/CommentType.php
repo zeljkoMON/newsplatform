@@ -1,5 +1,5 @@
 <?php
-// src AppBundle/Form/Type/CommentType.php
+// src AppBundle/Form/Type/CommentType
 
 namespace AppBundle\Form\Type;
 
@@ -13,6 +13,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CommentType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

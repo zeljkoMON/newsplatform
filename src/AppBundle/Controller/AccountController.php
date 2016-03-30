@@ -1,5 +1,5 @@
 <?php
-// src/AppBundle/Controller/AccountController
+// src/AppBundle/Controller/AccountController.php
 
 namespace AppBundle\Controller;
 
@@ -17,6 +17,8 @@ class AccountController extends Controller
 {
     /**
      * @Route("/account")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function editPasswordAction(Request $request)
     {
@@ -30,18 +32,18 @@ class AccountController extends Controller
             $username = $authenticator->getUser();
             $user = new Users();
             $user->setUsername($username);
-            $form = $this->createForm(new UserType(), $user)
-                ->add('newpass', PasswordType::class, array('mapped' => false))
-                ->add('confirmpass', PasswordType::class, array('mapped' => false))
-                ->add('changepass', SubmitType::class, array('label' => 'Change password'));
+            $form = $this->createForm(UserType::class, $user)
+                ->add('newPass', PasswordType::class, array('mapped' => false))
+                ->add('confirmPass', PasswordType::class, array('mapped' => false))
+                ->add('submit', SubmitType::class, array('label' => 'Change password'));
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
 
-                $username = $form->get('username')->getData();
-                $oldPassword = $form->get('password')->getData();
-                $newpass = $form->get('newpass')->getData();
-                $confirmpass = $form->get('confirmpass')->getData();
+                $username = $user->getUsername();
+                $oldPassword = $user->getPassword();
+                $newPass = $form->get('newPass')->getData();
+                $confirmPass = $form->get('confirmPass')->getData();
 
                 $em = $this->getDoctrine()->getManager();
                 $user = $em->getRepository('AppBundle:Users')
@@ -51,10 +53,9 @@ class AccountController extends Controller
                     $salt = $user->getSalt();
                     $oldPasswordHash = hash('sha256', $oldPassword . $salt);
                     if ($user->getPassword() == $oldPasswordHash) {
-                        if ($newpass <> '' && $newpass == $confirmpass) {
-                            $salt = bin2hex(openssl_random_pseudo_bytes(32));
-                            $user->setSalt($salt);
-                            $user->setPassword($newpass);
+                        if ($newPass <> '' && $newPass == $confirmPass) {
+                            $user->createNewSalt();
+                            $user->setPassword($newPass);
                             $em->getRepository('AppBundle:Users')
                                 ->updateUser($user);
 

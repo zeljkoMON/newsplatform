@@ -2,11 +2,11 @@ app:
     resource: "@AppBundle/Controller/"
     type:     annotation
 notlogged:
-    pattern: /notlogged
+    path: /notlogged
     defaults: { _controller: AppBundle:Success:notLogged }
 user-panel:
-    pattern: /user-panel
+    path: /user-panel
     defaults: { _controller: AppBundle:Success:userPanel }
 edit-news:
-    pattern: /edit-news
+    path: /edit-news
     defaults: { _controller: AppBundle:News:editById }

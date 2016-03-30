@@ -11,5 +11,16 @@ services:
     app.simplefile:
         class: AppBundle\Utils\SimpleFile
     app.addtags:
-        class:      AppBundle\Utils\AddTags
-        arguments: [ @doctrine.orm.entity_manager  ]
+        class: AppBundle\Utils\AddTags
+        arguments: [ doctrine.orm.entity_manager  ]
+    app.form.type.edituser:
+        class: AppBundle\Form\Type\EditUserType
+        tags:
+            - { name: form.type alias: EditUserType }
+    app.form.type.user:
+        class: AppBundle\Form\Type\UserType
+        arguments:
+                    - 'username'
+                    - 'password'
+        tags:
+            - { name: form.type alias: UserType }

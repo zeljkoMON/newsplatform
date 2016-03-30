@@ -1,5 +1,5 @@
 <?php
-// src AppBundle/Form/Type/UserType.php
+// src AppBundle/Form/Type/UserType
 
 namespace AppBundle\Form\Type;
 
@@ -12,6 +12,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -23,10 +27,5 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Users'));
-    }
-
-    public function getName()
-    {
-        return 'user';
     }
 }

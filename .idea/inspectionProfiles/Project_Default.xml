@@ -1,0 +1,11 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PhpUndefinedMethodInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="RouteSettingDeprecatedInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="Symfony2PhpRouteMissingInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="Symfony2PhpRouteWeakInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="Symfony2YamlRouteDuplicateInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="YamlControllerMethod" enabled="false" level="WARNING" enabled_by_default="false" />
+  </profile>
+</component>

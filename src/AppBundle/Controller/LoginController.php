@@ -16,24 +16,26 @@ class LoginController extends Controller
 {
     /**
      * @Route("/login")
+     * @param Request $request
+     * @return Response
      */
     public function loginAction(Request $request)
     {
-        $userform = new Users();
-        $userform->setUsername('zika');
-        $userform->setPassword('sifra');
-        $userform->setAdmin(false);
+        $user = new Users();
+        $user->setUsername('zika');
+        $user->setPassword('sifra');
+        $user->setAdmin(false);
         $secret = $this->container->getParameter('secret');
 
-        $form = $this->createForm(new UserType(), $userform)
+        $form = $this->createForm(UserType::class, $user)
             ->add('login', SubmitType::class, array('label' => 'Login'))
             ->add('check', CheckboxType::class, array('mapped' => false, 'required' => false));
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $username = $form->get('username')->getData();
-            $password = $form->get('password')->getData();
+            $username = $user->getUsername();
+            $password = $user->getPassword();
             $em = $this->getDoctrine()->getManager();
             $user = $em->getRepository('AppBundle:Users')
                 ->findByName($username);

@@ -160,7 +160,17 @@ class PendingUser
     public function setSalt($salt)
     {
         $this->salt = $salt;
+        return $this;
+    }
 
+    /**
+     * Create new salt
+     *
+     * @return PendingUser
+     */
+    public function createNewSalt()
+    {
+        $this->salt = bin2hex(openssl_random_pseudo_bytes(32));
         return $this;
     }
 }

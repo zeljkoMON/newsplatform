@@ -20,6 +20,8 @@ class NewsController extends Controller
 {
     /**
      * @Route("/add-news")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function addNewsAction(Request $request)
     {
@@ -93,8 +95,12 @@ class NewsController extends Controller
         return $this->render('default/edit-news.html.twig', array(
             'newslist' => $newslist));
     }
+
     /**
      * @Route("/edit-news/{id}")
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editByIdAction(Request $request, $id)
     {
@@ -149,6 +155,8 @@ class NewsController extends Controller
 
     /**
      * @Route("/authors/{author}")
+     * @param $author
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showByAuthorAction($author)
     {
@@ -162,6 +170,9 @@ class NewsController extends Controller
 
     /**
      * @Route("/news/{newsId}")
+     * @param Request $request
+     * @param $newsId
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showNewsAction(Request $request, $newsId)
     {

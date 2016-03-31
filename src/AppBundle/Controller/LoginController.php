@@ -34,8 +34,8 @@ class LoginController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $username = $user->getUsername();
-            $password = $user->getPassword();
+            $username = $form->get('username')->getData();
+            $password = $form->get('password')->getData();
             $em = $this->getDoctrine()->getManager();
             $user = $em->getRepository('AppBundle:Users')
                 ->findByName($username);

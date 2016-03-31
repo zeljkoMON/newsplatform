@@ -61,7 +61,6 @@ class AccountController extends Controller
 
                             return $this->redirectToRoute('user-panel');
                         } else return new Response('<html><body>' . "Password did't match" . '</body></html>');
-
                     }
                 }
             }

@@ -18,7 +18,7 @@ class JwtToken
         ->setIssuedAt(time())// Configures the time that the token was issue (iat claim)
         ->setNotBefore(time())// Configures the time that the token can be used (nbf claim)
         ->setExpiration(time() + $time)// Configures the expiration time of the token (exp claim)
-        ->set('user', $username)
+        ->set('username', $username)
             ->set('admin', $admin)
         ->sign($signer, $secret)// creates a signature using "testing" as key
         ->getToken(); // Retrieves the generated token

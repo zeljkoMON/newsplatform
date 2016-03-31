@@ -175,4 +175,9 @@ class Users
 
         return $this;
     }
+
+    public function createSalt()
+    {
+        $this->salt = bin2hex(openssl_random_pseudo_bytes(32));
+    }
 }

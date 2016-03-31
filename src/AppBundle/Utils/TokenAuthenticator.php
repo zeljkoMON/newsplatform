@@ -31,7 +31,7 @@ class TokenAuthenticator
                 $data->setCurrentTime(time());
                 if ($this->token->validate($data)) {
                     $this->authenticated = true;
-                    $this->user = $this->token->getClaim('user');
+                    $this->user = $this->token->getClaim('username');
                     $this->admin = $this->token->getClaim('admin');
                 }
             }

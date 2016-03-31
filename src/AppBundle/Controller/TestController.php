@@ -24,19 +24,11 @@ class TestController extends Controller
      */
     public function testAction(Request $request)
     {
-        $signer = new Sha256();
+        $salt = bin2hex(openssl_random_pseudo_bytes(32));
 
-        $secret = $this->container->getParameter('secret');
-        if (isset($_COOKIE['token'])) {
-            $token = (new Parser())->parse((string)$_COOKIE['token']);
+        return new Response(
+            '<html><body>' . var_dump($salt) . '</body></html>');
 
-            return new Response(
-                '<html><body>' . var_dump(strlen($_COOKIE['token'])) . '</body></html>');
-        }
-
-
-        return $this->render('default/test.html.twig', array(
-            'form' => $form->createView()));
 
     }
 }

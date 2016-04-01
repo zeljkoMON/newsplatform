@@ -43,8 +43,6 @@ class LoginController extends Controller
 
             }
         }
-
-
         $form = $this->createForm(UserType::class, $user)
             ->add('login', SubmitType::class, array('label' => 'Login'))
             ->add('check', CheckboxType::class, array('mapped' => false, 'required' => false));

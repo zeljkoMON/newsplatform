@@ -15,8 +15,6 @@ class TestController extends Controller
      */
     public function testAction()
     {
-
-
         return new Response(
             '<html><body>' . var_dump($_SERVER['REMOTE_ADDR']) . '</body></html>');
 

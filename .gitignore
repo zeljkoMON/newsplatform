@@ -49,3 +49,5 @@
 
 # idea
 /.idea/
+
+/src/AppBundle/Controller/*~

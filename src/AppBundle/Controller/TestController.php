@@ -22,12 +22,12 @@ class TestController extends Controller
     /**
      * @Route("/test")
      */
-    public function testAction(Request $request)
+    public function testAction()
     {
-        $salt = bin2hex(openssl_random_pseudo_bytes(32));
+
 
         return new Response(
-            '<html><body>' . var_dump($salt) . '</body></html>');
+            '<html><body>' . var_dump($_SERVER['REMOTE_ADDR']) . '</body></html>');
 
 
     }

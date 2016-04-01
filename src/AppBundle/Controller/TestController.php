@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class TestController extends Controller
 {
@@ -16,7 +17,7 @@ class TestController extends Controller
 
 
         return new Response(
-            '<html><body>' . var_dump($_SERVER['REMOTE_ADDR']) . '</body></html>');
+            '<html><body>' . var_dump(time()) . '</body></html>');
 
 
     }

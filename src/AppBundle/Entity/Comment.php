@@ -1,5 +1,5 @@
 <?php
-// src/AppBundle/Entity/Comment.php
+// src/AppBundle/Entity/Comment
 
 namespace AppBundle\Entity;
 

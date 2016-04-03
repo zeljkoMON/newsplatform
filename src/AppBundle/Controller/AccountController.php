@@ -59,13 +59,13 @@ class AccountController extends Controller
                             $em->getRepository('AppBundle:Users')
                                 ->updateUser($user);
 
-                            return $this->redirectToRoute('user-panel');
+                            return $this->redirect('/user-panel');
                         } else return new Response('<html><body>' . "Password did't match" . '</body></html>');
                     }
                 }
             }
             return $this->render('default/edit-password.html.twig', array(
                 'form' => $form->createView()));
-        } else return $this->redirectToRoute('notlogged');
+        } else return $this->redirect('/not-logged');
     }
 }

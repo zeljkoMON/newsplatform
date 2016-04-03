@@ -1,5 +1,5 @@
-<center>
-    {% for key,value in tagslist %}
+<div align="center">
+    {% for key,value in tagsList %}
         <div>
             <b>
                 <a href="/news/{{ value.id }}">{{ value.title }}</a>
@@ -27,4 +27,4 @@
             {% endfor %}
         </div>
     {% endfor %}
-</center>
+</div>

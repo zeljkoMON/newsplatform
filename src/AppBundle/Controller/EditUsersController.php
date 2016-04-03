@@ -19,7 +19,7 @@ class EditUsersController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    public function editAction(Request $request)
+    public function indexAction(Request $request)
     {
         $secret = $this->container->getParameter('secret');
         $cookie = 'token';
@@ -44,7 +44,7 @@ class EditUsersController extends Controller
                     $em->merge($user->getData());
                 }
                 $em->flush();
-                return $this->redirect('http://127.0.0.1/edit-users');
+                return $this->redirect('/edit-users');
             }
         } else return new Response(
             '<html><body>' . 'Insufficient privileges' . '</body></html>');

@@ -1,7 +1,7 @@
 {% if username %}
     Welcome {{ username }}!
 {% endif %}
-<center>
+<div align="center">
     <div>
         <a href="/login"> Login </a>
     </div>
@@ -12,7 +12,7 @@
         <a href="mailto:zeljko.nedeljkovic@gmail.com">Contact Me</a>
     </div>
 
-    {% for key,value in newslist %}
+    {% for key,value in newsList %}
         <div>
             <b>
                 <a href="/news/{{ value.id }}">{{ value.title }}</a>
@@ -46,4 +46,4 @@
             {% endfor %}
         </div>
     {% endfor %}
-</center>
+</div>

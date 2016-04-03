@@ -1,10 +1,10 @@
-<center>
-    {% for key,value in newslist %}
+<div align="center">
+    {% for value in newsList %}
         <div>
             {{ value.title }}
         </div>
         <div>
-           <textarea rows="4" cols="50">
+           <textarea title="news text" cols="50">
                {{ value.text }}
             </textarea>
         </div>
@@ -12,4 +12,4 @@
             <a href="/edit-news/{{ value.id }}"> Edit </a> {{ value.date|date('d-m-Y') }}
         </div>
     {% endfor %}
-</center>
+</div>

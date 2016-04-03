@@ -11,14 +11,16 @@ class TagController extends Controller
 {
     /**
      * @Route("/tags/{tag}")
+     * @param $tag
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function tagAction($tag)
+    public function indexAction($tag)
     {
         $em = $this->getDoctrine()->getRepository('AppBundle:Tag');
-        $tagslist = $em->findByTag($tag);
+        $tagsList = $em->findByTag($tag);
 
 
         return $this->render('default/tag.html.twig', array(
-            'tagslist' => $tagslist->getNews()->toArray()));
+            'tagsList' => $tagsList->getNews()->toArray()));
     }
 }

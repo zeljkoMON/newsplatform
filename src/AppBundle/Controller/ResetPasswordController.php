@@ -67,7 +67,7 @@ class ResetPasswordController extends Controller
         if ($token->verify($signer, $secret) && $token->validate($data)) {
             $form = $this->createFormBuilder()
                 ->add('password', PasswordType::class)
-                ->add('confirm_pass', PasswordType::class)
+                ->add('confirmPass', PasswordType::class)
                 ->add('submit', SubmitType::class)
                 ->getForm();
             $form->handleRequest($request);
@@ -75,7 +75,7 @@ class ResetPasswordController extends Controller
             if ($form->isValid() && $form->isSubmitted()) {
 
                 if ($form->get('password')->getData() ==
-                    $form->get('confirm_pass')->getData()
+                    $form->get('confirmPass')->getData()
                 ) {
 
                     $em = $this->getDoctrine()->getManager();

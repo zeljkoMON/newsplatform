@@ -1,5 +1,5 @@
 {# app/Resources/views/default/news.html.twig #}
-<center>
+<div align="center">
     Welcome {{ username }}!!!
     {{ form_start(form) }}
     {{ form_errors(form) }}
@@ -29,10 +29,11 @@
         {{ form_errors(form.tags) }}
         {{ form_widget(form.tags) }}
     </div>
-
+    Tag format: tag1,tag2,tag3...
     <div>
         {{ form_widget(form.save) }}
     </div>
 
     {{ form_end(form) }}
-</center>
+
+</div>

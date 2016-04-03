@@ -1,5 +1,5 @@
-<center>
-    {% for key,value in newslist %}
+<div align="center">
+    {% for key,value in newsList %}
         <div>
             <b>
                 {{ value.title }}
@@ -47,4 +47,4 @@
         {{ form_widget(form.post , { 'label': 'Post' }) }}
     </div>
     {{ form_end(form) }}
-</center>
+</div>

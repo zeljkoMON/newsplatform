@@ -12,7 +12,7 @@ class TestController extends Controller
     /**
      * @Route("/test")
      */
-    public function testAction()
+    public function indexAction()
     {
 
 

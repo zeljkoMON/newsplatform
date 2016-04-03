@@ -11,7 +11,11 @@ use AppBundle\Utils\TokenAuthenticator;
 
 class SuccessController extends Controller
 {
-    public function userPanelAction()
+    /**
+     * @return Response
+     * @Route("/user-panel")
+     */
+    public function indexAction()
     {
         $secret = $this->container->getParameter('secret');
         $cookie = 'token';
@@ -28,6 +32,10 @@ class SuccessController extends Controller
 
     }
 
+    /**
+     * @return Response
+     * @Route("/not-logged")
+     */
     public function notLoggedAction()
     {
         return new Response(

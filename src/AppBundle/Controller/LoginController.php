@@ -20,27 +20,26 @@ class LoginController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function loginAction(Request $request)
+    public function indexAction(Request $request)
     {
         $user = new Users();
         $user->setUsername('zika');
-        $user->setPassword('sifra');
         $user->setAdmin(false);
         $ip = $_SERVER['REMOTE_ADDR'];
         $banned = false;
         $secret = $this->container->getParameter('secret');
+        $msg = '';
         $em = $this->getDoctrine()->getManager();
         $bannedIp = $em->getRepository('AppBundle:BannedIp')
             ->findByIp($ip);
         if ($bannedIp <> null) {
-            if (($bannedIp->getTime() - time() + 300) > 0) {
+            if (($bannedIp->getTime() + 300) > time()) {
                 $banned = true;
 
             } else {
                 $em->remove($bannedIp);
                 $em->flush();
                 $_SESSION['counter'] = 0;
-
             }
         }
         $form = $this->createForm(UserType::class, $user)
@@ -55,29 +54,37 @@ class LoginController extends Controller
             $user = $em->getRepository('AppBundle:Users')
                 ->findByName($username);
             if ($form->isValid()) {
+
                 if ($form->get('login')->isClicked()) {
+
                     if ($user <> null) {
+
                         $salt = $user->getSalt();
                         $passwordHash = hash('sha256', $password . $salt);
                         if ($user->getPassword() == $passwordHash) {
+
                             $admin = $user->getAdmin();
                             $username = $user->getUsername();
                             $_SESSION['counter'] = 0;
                             if ($form->get('check')->getData()) {
+
                                 $jwt = new JwtToken($user->getUsername(), $secret, $admin, 3600);
                                 $token = $jwt->getString();
                                 setcookie('token', $token, time() + 3600);
-                                return $this->redirectToRoute('user-panel');
+                                return $this->redirect('/user-panel');
                             } else {
                                 session_start();
                                 $_SESSION['admin'] = $admin;
                                 $_SESSION['username'] = $username;
-                                return $this->redirectToRoute('user-panel');
+                                return $this->redirect('/user-panel');
                             }
-                        }
-                        $this->redirect('1270.0.0.1/login');
-                    }
-                    $this->redirect('1270.0.0.1/login');
+                        } else $msg = 'Invalid username/password';
+
+                        $this->redirect('/login');
+
+                    } else $msg = 'Invalid username/password';
+
+                    $this->redirect('/login');
                     if (isset($_SESSION['counter'])) {
                         $_SESSION['counter']++;
                     } else $_SESSION['counter'] = 0;
@@ -89,13 +96,12 @@ class LoginController extends Controller
                         $em->flush();
                     }
                 }
-
             }
         } else return new Response(
-            '<html><body>' . 'Due excessive login attempts you are banned 5 minutes' . '</body></html>');
+            '<html><body>' . 'Due excessive login attempts you are unable to log for 5 minutes' . '</body></html>');
 
         return $this->render('default/login.html.twig', array(
-            'form' => $form->createView(), 'counter' => $_SESSION['counter']));
+            'form' => $form->createView(), 'msg' => $msg));
     }
 
 }

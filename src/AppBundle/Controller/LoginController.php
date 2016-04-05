@@ -35,7 +35,6 @@ class LoginController extends Controller
         if ($bannedIp <> null) {
             if (($bannedIp->getTime() + 300) > time()) {
                 $banned = true;
-
             } else {
                 $em->remove($bannedIp);
                 $em->flush();
@@ -45,7 +44,6 @@ class LoginController extends Controller
         $form = $this->createForm(UserType::class, $user)
             ->add('login', SubmitType::class, array('label' => 'Login'))
             ->add('check', CheckboxType::class, array('mapped' => false, 'required' => false));
-
         $form->handleRequest($request);
 
         if (!$banned) {
@@ -63,19 +61,16 @@ class LoginController extends Controller
                         $passwordHash = hash('sha256', $password . $salt);
                         if ($user->getPassword() == $passwordHash) {
 
-                            $admin = $user->getAdmin();
-                            $username = $user->getUsername();
                             $_SESSION['counter'] = 0;
                             if ($form->get('check')->getData()) {
 
-                                $jwt = new JwtToken($user->getUsername(), $secret, $admin, 3600);
+                                $jwt = new JwtToken($user, $secret, 3600);
                                 $token = $jwt->getString();
-                                setcookie('token', $token, time() + 3600);
+                                setcookie('user', $token, time() + 3600);
                                 return $this->redirect('/user-panel');
                             } else {
                                 session_start();
-                                $_SESSION['admin'] = $admin;
-                                $_SESSION['username'] = $username;
+                                $_SESSION['user'] = serialize($user);
                                 return $this->redirect('/user-panel');
                             }
                         } else $msg = 'Invalid username/password';

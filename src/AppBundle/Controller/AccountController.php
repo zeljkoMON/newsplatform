@@ -3,14 +3,14 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\Users;
+use AppBundle\Form\Type\UserType;
+use AppBundle\Utils\Authenticator;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Form\Type\UserType;
-use AppBundle\Utils\TokenAuthenticator;
 use Symfony\Component\HttpFoundation\Response;
 
 class AccountController extends Controller
@@ -23,19 +23,18 @@ class AccountController extends Controller
     public function editPasswordAction(Request $request)
     {
         $secret = $this->container->getParameter('secret');
-        $cookie = 'token';
-        $authenticator = new TokenAuthenticator($secret, $cookie);
+        $cookie = 'user';
+        $authenticator = new Authenticator($secret, $cookie);
         $authenticated = $authenticator->isAuthenticated();
 
         if ($authenticated) {
 
-            $username = $authenticator->getUser();
-            $user = new Users();
-            $user->setUsername($username);
+            $user = $authenticator->getUser();
+
             $form = $this->createForm(UserType::class, $user)
                 ->add('newPass', PasswordType::class, array('mapped' => false))
                 ->add('confirmPass', PasswordType::class, array('mapped' => false))
-                ->add('submit', SubmitType::class, array('label' => 'Change password'));
+                ->add('changePass', SubmitType::class, array('label' => 'Change password'));
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {

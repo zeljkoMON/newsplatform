@@ -3,11 +3,10 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Utils\Authenticator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
-use AppBundle\Utils\TokenAuthenticator;
-
 
 class SuccessController extends Controller
 {
@@ -18,20 +17,19 @@ class SuccessController extends Controller
     public function indexAction()
     {
         $secret = $this->container->getParameter('secret');
-        $cookie = 'token';
-        $authenticator = new TokenAuthenticator($secret, $cookie);
+        $cookie = 'user';
+        $authenticator = new Authenticator($secret, $cookie);
         $authenticated = $authenticator->isAuthenticated();
-        $admin = $authenticator->isAdmin();
-        $username = $authenticator->getUser();
+        $user = $authenticator->getUser();
         if ($authenticated) {
-            return $this->render('default/user-panel.html.twig', array('username' => $username, 'admin' => $admin));
+            return $this->render('default/user-panel.html.twig', array('username' => $user->getUsername(),
+                'admin' => $user->getAdmin()));
         }
 
         return new Response(
             '<html><body>' . 'You need to login' . '</body></html>');
 
     }
-
     /**
      * @return Response
      * @Route("/not-logged")

@@ -5,13 +5,13 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\News;
 use AppBundle\Entity\Tag;
+use AppBundle\Utils\Authenticator;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Form\Type\NewsType;
-use AppBundle\Utils\TokenAuthenticator;
 
 class AddNewsController extends Controller
 {
@@ -23,15 +23,15 @@ class AddNewsController extends Controller
     public function indexAction(Request $request)
     {
         $secret = $this->container->getParameter('secret');
-        $cookie = 'token';
-        $authenticator = new TokenAuthenticator($secret, $cookie);
+        $cookie = 'user';
+        $authenticator = new Authenticator($secret, $cookie);
         $authenticated = $authenticator->isAuthenticated();
 
         $news = new News();
 
         if ($authenticated) {
-            $username = $authenticator->getUser();
-            $news->setAuthor($username);
+            $user = $authenticator->getUser();
+            $news->setAuthor($user->getUsername());
         } else return $this->redirect('/not-logged');
 
         $news->setTitle('New Title');
@@ -68,7 +68,7 @@ class AddNewsController extends Controller
             } else return $this->redirect('/not-logged');
         }
 
-        return $this->render('default/news.html.twig', array(
-            'form' => $form->createView(), 'username' => $username));
+        return $this->render('add-news/index.html.twig', array(
+            'form' => $form->createView(), 'username' => $user->getUsername()));
     }
 }

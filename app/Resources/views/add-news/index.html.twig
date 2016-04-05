@@ -1,0 +1,39 @@
+{# app/Resources/views/default/news.html.twig #}
+<div align="center">
+    Welcome {{ username }}!!!
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div>
+        {{ form_label(form.author) }}
+        {{ form_errors(form.author) }}
+        {{ form_widget(form.author, { 'attr':{'readonly':'readonly'} }) }}
+    </div>
+
+    <div>
+        {{ form_label(form.title) }}
+        {{ form_errors(form.title) }}
+        {{ form_widget(form.title) }}
+    </div>
+
+    <div>
+        {{ form_label(form.text) }}
+        {{ form_errors(form.text) }}
+        {{ form_widget(form.text, { 'attr': {
+            'rows' : '30',
+            'cols' : '30' }} ) }}
+    </div>
+
+    <div>
+        {{ form_label(form.tags) }}
+        {{ form_errors(form.tags) }}
+        {{ form_widget(form.tags) }}
+    </div>
+    Tag format: tag1,tag2,tag3...
+    <div>
+        {{ form_widget(form.save) }}
+    </div>
+
+    {{ form_end(form) }}
+
+</div>

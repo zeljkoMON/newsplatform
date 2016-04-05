@@ -3,12 +3,10 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Comment;
-use AppBundle\Form\Type\CommentType;
-use AppBundle\Utils\TokenAuthenticator;
+use AppBundle\Entity\Users;
+use AppBundle\Utils\Authenticator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 
 class ShowNewsController extends Controller
 {
@@ -17,16 +15,14 @@ class ShowNewsController extends Controller
      */
     public function indexAction()
     {
-        $username = null;
-        $admin = 0;
+        $user = new Users();
         $secret = $this->container->getParameter('secret');
-        $cookie = 'token';
-        $authenticator = new TokenAuthenticator($secret, $cookie);
+        $cookie = 'user';
+        $authenticator = new Authenticator($secret, $cookie);
         $authenticated = $authenticator->isAuthenticated();
 
         if ($authenticated) {
-            $username = $authenticator->getUser();
-            $admin = $authenticator->isAdmin();
+            $user = $authenticator->getUser();
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -34,54 +30,7 @@ class ShowNewsController extends Controller
             ->findLastEntries(10);
 
         return $this->render('index/index.html.twig', array(
-            'newsList' => $newsList, 'username' => $username, 'admin' => $admin));
+            'newsList' => $newsList, 'username' => $user->getUsername(), 'admin' => $user->getAdmin()));
 
-    }
-
-    /**
-     * @Route("/authors/{author}")
-     * @param $author
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function showByAuthorAction($author)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $newsList = $em->getRepository('AppBundle:News')
-            ->findByAuthor($author);
-
-        return $this->render('index/index.html.twig', array(
-            'newsList' => $newsList));
-    }
-
-    /**
-     * @Route("/news/{newsId}")
-     * @param Request $request
-     * @param $newsId
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function showNewsAction(Request $request, $newsId)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $news = $em->getRepository('AppBundle:News')
-            ->find($newsId);
-
-        $comment = new Comment();
-        $comment->setAuthor('Author');
-        $comment->setText('Text');
-        $comment->setDate(new \DateTime('now'));
-        $comment->setNews($news);
-
-        $form = $this->createForm(CommentType::class, $comment);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $news->addComment($comment);
-            $this->getDoctrine()->getManager()
-                ->persist($news);
-            $this->getDoctrine()->getManager()
-                ->flush();
-        }
-        $newsList[] = $news;
-        return $this->render('default/comment.html.twig', array(
-            'newsList' => $newsList, 'form' => $form->createView()));
     }
 }

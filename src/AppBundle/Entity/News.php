@@ -160,7 +160,7 @@ class News
      * @param \AppBundle\Entity\Comment $comment
      * @return News
      */
-    public function addComment(\AppBundle\Entity\Comment $comment)
+    public function addComment(Comment $comment)
     {
         $this->comments[] = $comment;
 
@@ -190,7 +190,7 @@ class News
     /**
      * Add tags
      *
-     * @param \AppBundle\Entity\Tag $tags
+     * @param \AppBundle\Entity\Tag $tag
      * @return News
      */
     public function addTag(\AppBundle\Entity\Tag $tag)
@@ -205,7 +205,7 @@ class News
     /**
      * Remove tags
      *
-     * @param \AppBundle\Entity\Tag $tags
+     * @param \AppBundle\Entity\Tag $tag
      */
     public function removeTag(\AppBundle\Entity\Tag $tag)
     {

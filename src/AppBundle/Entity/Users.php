@@ -38,6 +38,11 @@ class Users
      */
     protected $email;
 
+    public function __sleep()
+    {
+        return array('id', 'username', 'password', 'salt', 'admin', 'email');
+    }
+
     /**
      * Get username
      *

@@ -1,49 +1,54 @@
-{% if username %}
-    Welcome {{ username }}!
-{% endif %}
-<div align="center">
-    <div>
-        <a href="/login"> Login </a>
-    </div>
-    <div>
-        <a href="/search-author"> Search by author </a>
-    </div>
-    <div>
-        <a href="mailto:zeljko.nedeljkovic@gmail.com">Contact Me</a>
-    </div>
-
-    {% for key,value in newsList %}
-        <div>
-            <b>
-                <a href="/news/{{ value.id }}">{{ value.title }}</a>
-            </b>
-        </div>
-        <table border="2" style="width:20%">
-            <tr>
-                <td>
-                    {{ value.text }}
-                </td>
-            </tr>
-        </table>
-        <div>
+<table border="0" style="width: 100%">
+    <tr align="center">
+        <td colspan="2">
             <div>
-                Tags:
-                {% for key,tags in value.tags %}
-                    <a href="/tags/{{ tags.tag }}">{{ tags.tag }} </a>
-                {% endfor %}
+                {% include ':default:header.html.twig' %}
             </div>
-            Author: <a href="/authors/{{ value.author }}">{{ value.author }}</a> Date: {{ value.date|date('d-m-Y') }}
-            <div>
-                Comments:
-            </div>
-            {% for key,vrednost in value.comments %}
-                <table border="0" style="width:15%">
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 20%" align="left" valign="top">
+            {% if username %}
+                Welcome {{ username }}!
+                {% include 'default/user-panel.html.twig' %}
+            {% endif %}
+        </td>
+        <td style="width: 80%" align="center">
+            {% for key,value in newsList %}
+                <div>
+                    <b>
+                        <a href="/news/{{ value.id }}">{{ value.title }}</a>
+                    </b>
+                </div>
+                <table border="2" style="width:20%">
                     <tr>
-                        <td>{{ vrednost.author }}:</td>
-                        <td>{{ vrednost.text }}</td>
+                        <td>
+                            {{ value.text }}
+                        </td>
                     </tr>
                 </table>
+                <div>
+                    <div>
+                        Tags:
+                        {% for key,tags in value.tags %}
+                            <a href="/tags/{{ tags.tag }}">{{ tags.tag }} </a>
+                        {% endfor %}
+                    </div>
+                    Author: <a href="/authors/{{ value.author }}">{{ value.author }}</a>
+                    Date: {{ value.date|date('d-m-Y') }}
+                    <div>
+                        Comments:
+                    </div>
+                    {% for key,vrednost in value.comments %}
+                        <table border="0" style="width:15%">
+                            <tr>
+                                <td>{{ vrednost.author }}:</td>
+                                <td>{{ vrednost.text }}</td>
+                            </tr>
+                        </table>
+                    {% endfor %}
+                </div>
             {% endfor %}
-        </div>
-    {% endfor %}
-</div>
+        </td>
+    </tr>
+</table>

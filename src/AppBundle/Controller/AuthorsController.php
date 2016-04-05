@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Comment;
 use AppBundle\Form\Type\CommentType;
+use AppBundle\Utils\Authenticator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -20,6 +21,11 @@ class AuthorsController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $secret = $this->container->getParameter('secret');
+        $cookie = 'user';
+        $authenticator = new Authenticator($secret, $cookie);
+        $user = $authenticator->getUser();
+
         $form = $this->createFormBuilder()
             ->add('author', TextType::class)
             ->add('submit', SubmitType::class)
@@ -29,7 +35,8 @@ class AuthorsController extends Controller
             $author = $form->get('author')->getData();
             return $this->redirect('/authors/' . $author);
         }
-        return $this->render('authors/index.html.twig', array('form' => $form->createView()));
+        return $this->render('authors/index.html.twig', array('form' => $form->createView(),
+            'username' => $user->getUsername(), 'admin' => $user->getAdmin()));
     }
 
     /**
@@ -39,12 +46,17 @@ class AuthorsController extends Controller
      */
     public function showByAuthorAction($author)
     {
+        $secret = $this->container->getParameter('secret');
+        $cookie = 'user';
+        $authenticator = new Authenticator($secret, $cookie);
+        $user = $authenticator->getUser();
+
         $em = $this->getDoctrine()->getManager();
         $newsList = $em->getRepository('AppBundle:News')
             ->findByAuthor($author);
 
         return $this->render('index/index.html.twig', array(
-            'newsList' => $newsList));
+            'newsList' => $newsList, 'username' => $user->getUsername(), 'admin' => $user->getAdmin()));
     }
 
     /**
@@ -55,6 +67,11 @@ class AuthorsController extends Controller
      */
     public function showNewsAction(Request $request, $newsId)
     {
+        $secret = $this->container->getParameter('secret');
+        $cookie = 'user';
+        $authenticator = new Authenticator($secret, $cookie);
+        $user = $authenticator->getUser();
+
         $em = $this->getDoctrine()->getManager();
         $news = $em->getRepository('AppBundle:News')
             ->find($newsId);
@@ -76,6 +93,7 @@ class AuthorsController extends Controller
         }
         $newsList[] = $news;
         return $this->render('default/comment.html.twig', array(
-            'newsList' => $newsList, 'form' => $form->createView()));
+            'newsList' => $newsList, 'form' => $form->createView(),
+            'username' => $user->getUsername(), 'admin' => $user->getAdmin()));
     }
 }

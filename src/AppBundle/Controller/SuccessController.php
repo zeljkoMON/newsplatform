@@ -20,8 +20,9 @@ class SuccessController extends Controller
         $cookie = 'user';
         $authenticator = new Authenticator($secret, $cookie);
         $authenticated = $authenticator->isAuthenticated();
-        $user = $authenticator->getUser();
+
         if ($authenticated) {
+            $user = $authenticator->getUser();
             return $this->render('default/user-panel.html.twig', array('username' => $user->getUsername(),
                 'admin' => $user->getAdmin()));
         }

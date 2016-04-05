@@ -5,13 +5,13 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\News;
 use AppBundle\Form\Type\CommentType;
+use AppBundle\Utils\Authenticator;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Form\Type\NewsType;
-use AppBundle\Utils\TokenAuthenticator;
 
 class EditNewsController extends Controller
 {
@@ -21,15 +21,15 @@ class EditNewsController extends Controller
     public function indexAction()
     {
         $secret = $this->container->getParameter('secret');
-        $cookie = 'token';
-        $authenticator = new TokenAuthenticator($secret, $cookie);
+        $cookie = 'user';
+        $authenticator = new Authenticator($secret, $cookie);
         $authenticated = $authenticator->isAuthenticated();
 
         if ($authenticated) {
-            $username = $authenticator->getUser();
+            $user = $authenticator->getUser();
             $newsList = $this->getDoctrine()->getManager()
                 ->getRepository('AppBundle:News')
-                ->findByAuthor($username);
+                ->findByAuthor($user->getUsername());
 
         } else return $this->redirect('/not-logged');
 
@@ -46,10 +46,10 @@ class EditNewsController extends Controller
     public function editByIdAction(Request $request, $id)
     {
         $secret = $this->container->getParameter('secret');
-        $cookie = 'token';
-        $authenticator = new TokenAuthenticator($secret, $cookie);
+        $cookie = 'user';
+        $authenticator = new Authenticator($secret, $cookie);
         $authenticated = $authenticator->isAuthenticated();
-        $admin = $authenticator->isAdmin();
+        $admin = $authenticator->getUser()->getAdmin();
 
         if ($authenticated) {
             $news = $this->getDoctrine()->getManager()
@@ -68,14 +68,14 @@ class EditNewsController extends Controller
                 if ($form->get('edit')->isClicked()) {
                     $em->getRepository('AppBundle:News')
                         ->updateNews($news);
-                    return $this->redirectToRoute('user-panel');
+                    return $this->redirect('/user-panel');
                 }
                 if ($form->get('delete')->isClicked()) {
                     if ($news <> null) {
                         $em->getRepository('AppBundle:News')
                             ->removeNews($news);
                     }
-                    return $this->redirectToRoute('edit-news');
+                    return $this->redirect('/edit-news');
                 }
                 foreach ($form->get('comments') as $entry) {
                     $toRemove = $entry->get('post')->isClicked();

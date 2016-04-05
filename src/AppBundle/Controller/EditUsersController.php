@@ -3,13 +3,13 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Utils\Authenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Form\Type\EditUserType;
-use AppBundle\Utils\TokenAuthenticator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class EditUsersController extends Controller
@@ -22,10 +22,10 @@ class EditUsersController extends Controller
     public function indexAction(Request $request)
     {
         $secret = $this->container->getParameter('secret');
-        $cookie = 'token';
-        $authenticator = new TokenAuthenticator($secret, $cookie);
+        $cookie = 'user';
+        $authenticator = new Authenticator($secret, $cookie);
         $authenticated = $authenticator->isAuthenticated();
-        $admin = $authenticator->isAdmin();
+        $admin = $authenticator->getUser()->getAdmin();
 
         if ($authenticated && $admin == 1) {
             $em = $this->getDoctrine()->getManager();

@@ -67,9 +67,8 @@ class AuthorsController extends Controller
      */
     public function showNewsAction(Request $request, $newsId)
     {
-        $secret = $this->container->getParameter('secret');
-        $cookie = 'user';
-        $authenticator = new Authenticator($secret, $cookie);
+        $authenticator = $this->get('app.authenticator');
+        //$authenticated = $authenticator->isAuthenticated();
         $user = $authenticator->getUser();
 
         $em = $this->getDoctrine()->getManager();

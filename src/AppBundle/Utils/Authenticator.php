@@ -14,7 +14,7 @@ class Authenticator
     protected $token;
     protected $user;
 
-    public function __construct($secret, $cookie_value)
+    public function __construct($secret)
     {
         $signer = new Sha256();
         $this->user = new Users();
@@ -22,8 +22,8 @@ class Authenticator
         if (isset($_SESSION['user'])) {
             $this->authenticated = true;
             $this->user = unserialize($_SESSION['user']);
-        } elseif (isset($_COOKIE[$cookie_value])) {
-            $this->token = (new Parser())->parse((string)$_COOKIE[$cookie_value]);
+        } elseif (isset($_COOKIE['user'])) {
+            $this->token = (new Parser())->parse((string)$_COOKIE['user']);
             if ($this->token->verify($signer, $secret)) {
                 $data = new ValidationData();
                 $data->setIssuer('http://example.com');

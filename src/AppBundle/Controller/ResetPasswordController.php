@@ -20,35 +20,42 @@ class ResetPasswordController extends Controller
 {
     /**
      * @Route("/reset-password")
+     * @Route("/reset-password/")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
     {
-        $form = $this->createFormBuilder()
-            ->add('username', TextType::class)
-            ->add('email', EmailType::class)
-            ->add('submit', SubmitType::class)
-            ->getForm();
-        $form->handleRequest($request);
+        $authenticator = $this->get('app.authenticator');
+        $authenticated = $authenticator->isAuthenticated();
 
-        if ($form->isValid() && $form->isSubmitted()) {
-            $username = $form->get('username')->getData();
-            $email = $form->get('email')->getData();
-            $em = $this->getDoctrine()->getManager();
-            $user = $em->getRepository('AppBundle:Users')
-                ->findByName($username);
-            if ($user <> null) {
-                if ($user->getEmail() == $email) {
-                    $secret = $this->container->getParameter('secret');
-                    $token = new JwtToken($username, $secret, $user->getAdmin(), 600);
-                    $subject = 'Password reset request';
-                    $msg = 'http:/127.0.0.1/reset-password/' . $token->getString();
-                    mail($email, $subject, $msg);
-                }
-            } else return new Response('<html><body>' . 'User/email not found' . '</body></html>');
-        }
-        return $this->render(':default:reset-password.html.twig', array('form' => $form->createView()));
+        if ($authenticated) {
+            $form = $this->createFormBuilder()
+                ->add('username', TextType::class)
+                ->add('email', EmailType::class)
+                ->add('submit', SubmitType::class)
+                ->getForm();
+            $form->handleRequest($request);
+
+            if ($form->isValid() && $form->isSubmitted()) {
+                $username = $form->get('username')->getData();
+                $email = $form->get('email')->getData();
+                $em = $this->getDoctrine()->getManager();
+                $user = $em->getRepository('AppBundle:Users')
+                    ->findByName($username);
+                if ($user <> null) {
+                    if ($user->getEmail() == $email) {
+                        $secret = $this->container->getParameter('secret');
+                        $token = new JwtToken($username, $secret, $user->getAdmin(), 600);
+                        $subject = 'Password reset request';
+                        $msg = 'http:/127.0.0.1/reset-password/' . $token->getString();
+                        mail($email, $subject, $msg);
+                    }
+                } else return new Response('<html><body>' . 'User/email not found' . '</body></html>');
+            }
+            return $this->render(':default:reset-password.html.twig', array('form' => $form->createView()));
+        } else $this->redirect('/not-logged');
+        return $this->redirect('/not-logged');
     }
 
     /**

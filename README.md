@@ -1,1 +1,1 @@
-Simple news portal. Design to show news, tag them and search both by tag and author.
+Simple news portal. Designed to show news, tag them and search both by tag and author.

@@ -16,9 +16,7 @@ class SuccessController extends Controller
      */
     public function indexAction()
     {
-        $secret = $this->container->getParameter('secret');
-        $cookie = 'user';
-        $authenticator = new Authenticator($secret, $cookie);
+        $authenticator = $this->get('app.authenticator');
         $authenticated = $authenticator->isAuthenticated();
 
         if ($authenticated) {

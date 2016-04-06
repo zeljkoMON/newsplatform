@@ -4,7 +4,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Users;
-use AppBundle\Utils\Authenticator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -15,15 +14,12 @@ class ShowNewsController extends Controller
      */
     public function indexAction()
     {
-        $user = new Users();
-        $secret = $this->container->getParameter('secret');
-        $cookie = 'user';
-        $authenticator = new Authenticator($secret, $cookie);
+        $authenticator = $this->get('app.authenticator');
         $authenticated = $authenticator->isAuthenticated();
 
         if ($authenticated) {
             $user = $authenticator->getUser();
-        }
+        } else $user = new Users();
 
         $em = $this->getDoctrine()->getManager();
         $newsList = $em->getRepository('AppBundle:News')

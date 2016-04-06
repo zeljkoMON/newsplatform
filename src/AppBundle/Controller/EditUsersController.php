@@ -21,9 +21,7 @@ class EditUsersController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $secret = $this->container->getParameter('secret');
-        $cookie = 'user';
-        $authenticator = new Authenticator($secret, $cookie);
+        $authenticator = $this->get('app.authenticator');
         $authenticated = $authenticator->isAuthenticated();
         $admin = $authenticator->getUser()->getAdmin();
 

@@ -64,14 +64,14 @@ class LoginController extends Controller
                             $_SESSION['counter'] = 0;
                             if ($form->get('check')->getData()) {
 
-                                $jwt = new JwtToken($user, $secret, 3600);
+                                $jwt = new JwtToken($user, $secret, 172800);
                                 $token = $jwt->getString();
-                                setcookie('user', $token, time() + 3600);
-                                return $this->redirect('/user-panel');
+                                setcookie('user', $token, time() + 172800);
+                                return $this->redirect('/');
                             } else {
                                 session_start();
                                 $_SESSION['user'] = serialize($user);
-                                return $this->redirect('/user-panel');
+                                return $this->redirect('/');
                             }
                         } else $msg = 'Invalid username/password';
 

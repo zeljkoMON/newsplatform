@@ -23,7 +23,8 @@ class EditUsersController extends Controller
     {
         $authenticator = $this->get('app.authenticator');
         $authenticated = $authenticator->isAuthenticated();
-        $admin = $authenticator->getUser()->getAdmin();
+        $user = $authenticator->getUser();
+        $admin = $user->getAdmin();
 
         if ($authenticated && $admin == 1) {
             $em = $this->getDoctrine()->getManager();
@@ -48,6 +49,8 @@ class EditUsersController extends Controller
             '<html><body>' . 'Insufficient privileges' . '</body></html>');
 
         return $this->render('edit-users/index.html.twig', array(
-            'form' => $form->createView()));
+            'form' => $form->createView(),
+            'username' => $user->getUsername(),
+            'admin' => $admin));
     }
 }

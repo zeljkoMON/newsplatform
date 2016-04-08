@@ -1,28 +1,40 @@
-<div align="center">
-    {{ form_start(form) }}
-    {{ form_errors(form) }}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        {{ source('css/news.css') }}
+    </style>
+</head>
 
-    <div>
-        {{ form_label(form.username) }}
-        {{ form_errors(form.username) }}
-        {{ form_widget(form.username) }}
+<body>
+<div id="page">
+    <div id="header">
+        {% include 'default/header.html.twig' %}
     </div>
 
-    <div>
-        {{ form_label(form.password) }}
-        {{ form_errors(form.password) }}
-        {{ form_widget(form.password) }}
-    </div>
-    <div>
-        Remember me: {{ form_widget(form.check) }}
-    </div>
-    <div>
-        {{ form_widget(form.login) }}
-    </div>
+    <div id="login">
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
 
-    {{ form_end(form) }}
+        <div>
+            {{ form_label(form.username) }}
+            {{ form_errors(form.username) }}
+            {{ form_widget(form.username) }}
+        </div>
 
-    {% if msg %}
-        {{ msg }}
-    {% endif %}
+        <div>
+            {{ form_label(form.password) }}
+            {{ form_errors(form.password) }}
+            {{ form_widget(form.password) }}
+        </div>
+        <div>
+            Remember me: {{ form_widget(form.check) }}
+        </div>
+        <div>
+            {{ form_widget(form.login) }}
+        </div>
+
+        {{ form_end(form) }}
+    </div>
 </div>
+</body>

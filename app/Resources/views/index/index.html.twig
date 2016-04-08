@@ -19,25 +19,29 @@
     {% endif %}
 
     <div id="news">
-        {% for value in newsList %}
-            <div id="news_title">
-                <a href="/news/{{ value.id }}">{{ value.title }}</a>
-            </div>
-            <div id="news_text">
-                {{ value.text }}
-            </div>
-            <div id="tags">
-                <div>
-                    Tags:
-                    {% for key,tags in value.tags %}
-                        <a href="/tags/{{ tags.tag }}">{{ tags.tag }} </a>,
-                    {% endfor %}
+        {% if msg %}
+            {{ msg }}
+        {% else %}
+            {% for value in newsList %}
+                <div id="news_title">
+                    <a href="/news/{{ value.id }}">{{ value.title }}</a>
                 </div>
-                Author: <a href="/authors/{{ value.author }}">{{ value.author }}</a>
-                Date: {{ value.date|date('d-m-Y') }}
-            </div>
+                <div id="news_text">
+                    {{ value.text }}
+                </div>
+                <div id="tags">
+                    <div>
+                        Tags:
+                        {% for key,tags in value.tags %}
+                            <a href="/tags/{{ tags.tag }}">{{ tags.tag }} </a>,
+                        {% endfor %}
+                    </div>
+                    Author: <a href="/authors/{{ value.author }}">{{ value.author }}</a>
+                    Date: {{ value.date|date('d-m-Y') }}
+                </div>
 
-        {% endfor %}
+            {% endfor %}
+        {% endif %}
     </div>
 </div>
 </body>

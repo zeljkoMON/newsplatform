@@ -19,9 +19,8 @@ class AuthorsController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $secret = $this->container->getParameter('secret');
-        $cookie = 'user';
-        $authenticator = new Authenticator($secret, $cookie);
+        $authenticator = $this->get('app.authenticator');
+
         $user = $authenticator->getUser();
 
         $form = $this->createFormBuilder()
@@ -44,16 +43,22 @@ class AuthorsController extends Controller
      */
     public function showByAuthorAction($author)
     {
-        $secret = $this->container->getParameter('secret');
-        $cookie = 'user';
-        $authenticator = new Authenticator($secret, $cookie);
+        $authenticator = $this->get('app.authenticator');
+        $msg = '';
         $user = $authenticator->getUser();
 
         $em = $this->getDoctrine()->getManager();
         $newsList = $em->getRepository('AppBundle:News')
             ->findByAuthor($author);
+        if ($newsList == null) {
+            $msg = 'Author not found';
+        }
 
         return $this->render('index/index.html.twig', array(
-            'newsList' => $newsList, 'username' => $user->getUsername(), 'admin' => $user->getAdmin()));
+                'newsList' => $newsList,
+                'username' => $user->getUsername(),
+                'admin' => $user->getAdmin(),
+                'msg' => $msg)
+        );
     }
 }

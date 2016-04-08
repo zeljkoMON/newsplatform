@@ -1,14 +1,37 @@
-<div align="center">
-    {{ form_start(form) }}
-    {% for user in form.users %}
-        <div>
-            user :{{ form_widget(user.username) }}
-        </div>
-        <div>
-            admin: {{ form_widget(user.admin) }}
-        </div>
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        {{ source('css/news.css') }}
+    </style>
+</head>
 
-    {% endfor %}
-    {{ form_widget(form.submit) }}
-    {{ form_end(form) }}
+<body>
+<div id="page">
+    <div id="header">
+        {% include 'default/header.html.twig' %}
+    </div>
+    {% if username %}
+        <div id="user">
+            Welcome {{ username }}!
+            {% include 'default/user-panel.html.twig' %}
+        </div>
+    {% endif %}
+
+    <div id="news">
+        {{ form_start(form) }}
+        {% for user in form.users %}
+            <div>
+                user :{{ form_widget(user.username, { 'attr':{'readonly':'readonly'} }) }}
+            </div>
+            <div>
+                admin: {{ form_widget(user.admin) }}
+            </div>
+        {% endfor %}
+        {{ form_widget(form.submit) }}
+        {{ form_end(form) }}
+
+    </div>
 </div>
+</body>
+

@@ -5,7 +5,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\PendingUser;
 use AppBundle\Entity\Users;
-use AppBundle\Utils\JwtToken;
+use AppBundle\Utils\RegistrationToken;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -29,8 +29,8 @@ class CreateAccountController extends Controller
      */
     public function createAction(Request $request)
     {
-        $user = new PendingUser();
-        $form = $this->createFormBuilder($user)
+        $pendingUser = new PendingUser();
+        $form = $this->createFormBuilder($pendingUser)
             ->add('username', TextType::class)
             ->add('email', EmailType::class)
             ->add('confirmEmail', EmailType::class, array('mapped' => false))
@@ -46,25 +46,25 @@ class CreateAccountController extends Controller
                 if ($form->get('password')->getData() == $form->get('confirmPass')->getData()) {
                     $em = $this->getDoctrine()->getManager();
 
-                    $password = $user->getPassword();
+                    $username = $pendingUser->getUsername();
+                    $password = $pendingUser->getPassword();
 
                     $secret = $this->container->getParameter('secret');
-                    $user->createNewSalt();
-                    $user->setPassword($password);
-
-                    $token = new JwtToken($user, $secret, 0, 600);
-                    $user->setToken($token->getString());
+                    $token = new RegistrationToken($username, $secret);
+                    $pendingUser->createNewSalt();
+                    $pendingUser->setPassword($password);
+                    $pendingUser->setToken($token->getString());
 
                     if (!($em->getRepository('AppBundle:Users')
-                        ->mailExists($user->getEmail()))
+                        ->mailExists($pendingUser->getEmail()))
                     ) {
                         try {
-                            $em->persist($user);
+                            $em->persist($pendingUser);
                             $em->flush();
 
                             $msg = 'Please activate using this link in next 10 minutes http:/127.0.0.1/activation/' .
-                                $user->getToken();
-                            mail($user->getEmail(), 'Account activation', $msg);
+                                $pendingUser->getToken();
+                            mail($pendingUser->getEmail(), 'Account activation', $msg);
                         } catch (UniqueConstraintViolationException $e) {
                             return new Response(
                                 '<html><body>' . 'Username already in use' . '</body></html>');
@@ -76,7 +76,7 @@ class CreateAccountController extends Controller
                 }
             }
         }
-        return $this->render('create-account/index.html.twig', array(
+        return $this->render('default/create-account.html.twig', array(
             'form' => $form->createView()));
     }
 

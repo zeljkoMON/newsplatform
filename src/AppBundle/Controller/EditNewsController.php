@@ -22,10 +22,10 @@ class EditNewsController extends Controller
      */
     public function indexAction()
     {
-        $secret = $this->container->getParameter('secret');
-        $cookie = 'user';
-        $authenticator = new Authenticator($secret, $cookie);
+        $authenticator = $this->get('app.authenticator');
         $authenticated = $authenticator->isAuthenticated();
+        $user = $authenticator->getUser();
+        $admin = $user->getAdmin();
 
         if ($authenticated) {
             $user = $authenticator->getUser();
@@ -37,7 +37,9 @@ class EditNewsController extends Controller
 
         return $this->render('edit-news/index.html.twig', array(
             'newsList' => $newsList,
-            'username' => $user->getUsername()));
+                'username' => $user->getUsername(),
+                'admin' => $admin)
+        );
     }
 
     /**

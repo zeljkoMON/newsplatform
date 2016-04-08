@@ -157,7 +157,7 @@ class News
     /**
      * Add comment
      *
-     * @param \AppBundle\Entity\Comment $comment
+     * @param Comment $comment
      * @return News
      */
     public function addComment(Comment $comment)
@@ -170,9 +170,9 @@ class News
     /**
      * Remove comment
      *
-     * @param \AppBundle\Entity\Comment $comment
+     * @param Comment $comment
      */
-    public function removeComment(\AppBundle\Entity\Comment $comment)
+    public function removeComment(Comment $comment)
     {
         $this->comments->removeElement($comment);
     }
@@ -190,10 +190,10 @@ class News
     /**
      * Add tags
      *
-     * @param \AppBundle\Entity\Tag $tag
+     * @param Tag $tag
      * @return News
      */
-    public function addTag(\AppBundle\Entity\Tag $tag)
+    public function addTag(Tag $tag)
     {
         if (!($this->tags->contains($tag))) {
             $this->tags[] = $tag;
@@ -205,9 +205,9 @@ class News
     /**
      * Remove tags
      *
-     * @param \AppBundle\Entity\Tag $tag
+     * @param Tag $tag
      */
-    public function removeTag(\AppBundle\Entity\Tag $tag)
+    public function removeTag(Tag $tag)
     {
         $this->tags->removeElement($tag);
     }
@@ -230,5 +230,14 @@ class News
     public function removeAllComments()
     {
         $this->comments->clear();
+    }
+
+    public function tagsToString()
+    {
+        foreach ($this->tags as $tag) {
+            $tags_array[] = $tag->getTag();
+        }
+        return implode(',', $tags_array);
+
     }
 }

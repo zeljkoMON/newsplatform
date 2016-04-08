@@ -46,13 +46,13 @@ class CreateAccountController extends Controller
                 if ($form->get('password')->getData() == $form->get('confirmPass')->getData()) {
                     $em = $this->getDoctrine()->getManager();
 
-                    $username = $user->getUsername();
                     $password = $user->getPassword();
 
                     $secret = $this->container->getParameter('secret');
-                    $token = new JwtToken($username, $secret, 0, 600);
                     $user->createNewSalt();
                     $user->setPassword($password);
+
+                    $token = new JwtToken($user, $secret, 0, 600);
                     $user->setToken($token->getString());
 
                     if (!($em->getRepository('AppBundle:Users')
@@ -76,7 +76,7 @@ class CreateAccountController extends Controller
                 }
             }
         }
-        return $this->render('default/create-account.html.twig', array(
+        return $this->render('create-account/index.html.twig', array(
             'form' => $form->createView()));
     }
 

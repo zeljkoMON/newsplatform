@@ -4,11 +4,13 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\News;
+use AppBundle\Entity\Tag;
 use AppBundle\Form\Type\CommentType;
 use AppBundle\Utils\Authenticator;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Form\Type\NewsType;
@@ -33,8 +35,9 @@ class EditNewsController extends Controller
 
         } else return $this->redirect('/not-logged');
 
-        return $this->render('default/edit-news.html.twig', array(
-            'newsList' => $newsList));
+        return $this->render('edit-news/index.html.twig', array(
+            'newsList' => $newsList,
+            'username' => $user->getUsername()));
     }
 
     /**
@@ -47,7 +50,8 @@ class EditNewsController extends Controller
     {
         $authenticator = $this->get('app.authenticator');
         $authenticated = $authenticator->isAuthenticated();
-        $admin = $authenticator->getUser()->getAdmin();
+        $user = $authenticator->getUser();
+        $admin = $user->getAdmin();
 
         if ($authenticated) {
             $news = $this->getDoctrine()->getManager()
@@ -56,16 +60,33 @@ class EditNewsController extends Controller
             $em = $this->getDoctrine()->getManager();
 
             $form = $this->createForm(NewsType::class, $news)
+                ->add('tags', TextType::class, array('mapped' => false))
                 ->add('edit', SubmitType::class, array('label' => 'edit'))
                 ->add('delete', SubmitType::class, array('label' => 'delete'))
                 ->add('comments', CollectionType::class, array('entry_type' => CommentType::class));
+            $form->get('tags')->setData($news->tagsToString());
 
             $form->handleRequest($request);
 
             if ($form->isValid()) {
+
                 if ($form->get('edit')->isClicked()) {
-                    $em->getRepository('AppBundle:News')
-                        ->updateNews($news);
+                    $news->removeAllTags();
+                    $tagsStr = $form->get('tags')->getData();
+                    $tags = explode(',', $tagsStr);
+                    foreach ($tags as $value) {
+                        $tag = $em->getRepository('AppBundle:Tag')->findByTag($value);
+                        if ($tag <> null) {
+                            $news->addTag($tag);
+                        } else {
+                            $tag = new Tag();
+                            $tag->setTag($value);
+                            $em->persist($tag);
+                            $news->addTag($tag);
+                        }
+                        $em->getRepository('AppBundle:News')
+                            ->updateNews($news);
+                    }
                     return $this->redirect('/user-panel');
                 }
                 if ($form->get('delete')->isClicked()) {
@@ -88,6 +109,7 @@ class EditNewsController extends Controller
 
         } else return $this->redirect('/not-logged');
         return $this->render('default/news-editor.html.twig', array(
-            'form' => $form->createView(), 'admin' => $admin));
+            'form' => $form->createView(), 'admin' => $admin,
+            'username' => $user->getUsername()));
     }
 }

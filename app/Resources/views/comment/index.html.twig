@@ -9,7 +9,7 @@
 <body>
 <div id="page">
     <div id="header">
-        {% include ':default:header.html.twig' %}
+        {% include 'default/header.html.twig' %}
     </div>
     {% if username %}
         <div id="user">
@@ -30,7 +30,7 @@
                 <div>
                     Tags:
                     {% for key,tags in value.tags %}
-                        <a href="/tags/{{ tags.tag }}">{{ tags.tag }} </a>,
+                        {{ tags.tag }},
                     {% endfor %}
                 </div>
                 Author: <a href="/authors/{{ value.author }}">{{ value.author }}</a>
@@ -71,7 +71,5 @@
             {{ form_end(form) }}
         </div>
     </div>
-
 </div>
-
 </body>

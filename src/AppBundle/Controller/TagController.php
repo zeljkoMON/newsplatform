@@ -20,7 +20,7 @@ class TagController extends Controller
         $tagsList = $em->findByTag($tag);
 
 
-        return $this->render('default/tag.html.twig', array(
-            'tagsList' => $tagsList->getNews()->toArray()));
+        return $this->render('tags/index.html.twig', array(
+            'newsList' => $tagsList->getNews()->toArray()));
     }
 }

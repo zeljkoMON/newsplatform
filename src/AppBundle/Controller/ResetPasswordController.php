@@ -53,7 +53,7 @@ class ResetPasswordController extends Controller
                     }
                 } else return new Response('<html><body>' . 'User/email not found' . '</body></html>');
             }
-            return $this->render(':default:reset-password.html.twig', array('form' => $form->createView()));
+            return $this->render('reset-password/index.html.twig', array('form' => $form->createView()));
         } else $this->redirect('/not-logged');
         return $this->redirect('/not-logged');
     }

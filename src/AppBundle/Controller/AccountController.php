@@ -19,7 +19,7 @@ class AccountController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    public function editPasswordAction(Request $request)
+    public function indexAction(Request $request)
     {
         $authenticator = $this->get('app.authenticator');
         $authenticated = $authenticator->isAuthenticated();
@@ -59,7 +59,7 @@ class AccountController extends Controller
                     }
                 }
             }
-            return $this->render('default/edit-password.html.twig', array(
+            return $this->render('account/index.html.twig', array(
                 'form' => $form->createView()));
         } else return $this->redirect('/not-logged');
     }

@@ -1,0 +1,34 @@
+<div align="center">
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div>
+        {{ form_label(form.username) }}
+        {{ form_errors(form.username) }}
+        {{ form_widget(form.username,{ 'attr':{'readonly':'readonly'} }) }}
+    </div>
+
+    <div>
+        {{ form_label(form.password) }}
+        {{ form_errors(form.password) }}
+        {{ form_widget(form.password) }}
+    </div>
+
+    <div>
+        {{ form_label(form.newPass) }}
+        {{ form_errors(form.newPass) }}
+        {{ form_widget(form.newPass) }}
+    </div>
+
+    <div>
+        {{ form_label(form.confirmPass) }}
+        {{ form_errors(form.confirmPass) }}
+        {{ form_widget(form.confirmPass) }}
+    </div>
+
+    <div>
+        {{ form_widget(form.changePass) }}
+    </div>
+
+    {{ form_end(form) }}
+</div>

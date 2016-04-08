@@ -1,0 +1,14 @@
+<div align="center">
+    {{ form_start(form) }}
+    {% for user in form.users %}
+        <div>
+            user :{{ form_widget(user.username) }}
+        </div>
+        <div>
+            admin: {{ form_widget(user.admin) }}
+        </div>
+
+    {% endfor %}
+    {{ form_widget(form.submit) }}
+    {{ form_end(form) }}
+</div>

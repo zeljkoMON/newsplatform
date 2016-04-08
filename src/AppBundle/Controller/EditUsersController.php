@@ -47,7 +47,7 @@ class EditUsersController extends Controller
         } else return new Response(
             '<html><body>' . 'Insufficient privileges' . '</body></html>');
 
-        return $this->render('default/edit-users.html.twig', array(
+        return $this->render('edit-users/index.html.twig', array(
             'form' => $form->createView()));
     }
 }

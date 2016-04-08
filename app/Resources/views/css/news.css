@@ -1,0 +1,64 @@
+#page {
+    width: 850px;
+    position: absolute;
+    left: 20%;
+}
+
+#header {
+    position: absolute;
+    height: 40px;
+    width: 850px;
+    background-color: green;
+    text-align: center;
+}
+
+#news {
+    position: absolute;
+    top: 40px;
+    left: 150px;
+    width: 700px;
+    background-color: #5eb5e0;
+    text-align: center;
+    padding-bottom: 10px;
+    align-self: center;
+
+}
+
+#user {
+    position: absolute;
+    top: 50px;
+    float: left;
+    width: 150px;
+    height: 100%;
+}
+
+#news_title {
+    padding-top: 5px;
+    font-weight: bold;
+    padding-bottom: 5px;
+}
+
+#news_text {
+    background-color: #d1d8d0;
+    width: 500px;
+    margin: 0 auto;
+    min-height: 50px;
+    text-align: justify;
+    padding: 5px;
+}
+
+#tags {
+    padding-bottom: 5px;
+}
+
+#add_comment {
+    width: inherit;
+    float: left;
+}
+
+#comment_text {
+    background-color: #d1d8d0;
+    width: 500px;
+    padding: 5px;
+    margin: 0 auto;
+}

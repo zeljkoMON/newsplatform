@@ -18,6 +18,9 @@
         {{ form_errors(form.text) }}
         {{ form_widget(form.text) }}
     </div>
+    <div>
+        {{ form_row(form.tags) }}
+    </div>
 
     <div>
         {{ form_widget(form.edit) }} {{ form_widget(form.delete) }}
@@ -25,7 +28,7 @@
     {% for comment in form.comments %}
         {{ form_row(comment.author) }}
         {{ form_row(comment.text) }}
-        {% if admin == 1 %} }
+        {% if admin == 1 %}
             {{ form_row(comment.post,{ 'label': 'Delete' } ) }}
         {% endif %}
     {% endfor %}

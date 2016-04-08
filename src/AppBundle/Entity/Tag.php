@@ -73,10 +73,10 @@ class Tag
     /**
      * Add news
      *
-     * @param \AppBundle\Entity\News $news
+     * @param News $news
      * @return Tag
      */
-    public function addNews(\AppBundle\Entity\News $news)
+    public function addNews(News $news)
     {
         $this->news[] = $news;
 
@@ -86,9 +86,9 @@ class Tag
     /**
      * Remove news
      *
-     * @param \AppBundle\Entity\News $news
+     * @param News $news
      */
-    public function removeNews(\AppBundle\Entity\News $news)
+    public function removeNews(News $news)
     {
         $this->news->removeElement($news);
     }

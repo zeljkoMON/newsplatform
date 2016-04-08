@@ -29,4 +29,13 @@ class TagRepository extends EntityRepository
             ->setParameter('tag', $tag)
             ->getOneOrNullResult();
     }
+
+    public function removeOrphans()
+    {
+        $this->getEntityManager()
+            ->createQuery('DELETE FROM AppBundle:Tag t
+            WHERE t.news IS EMPTY')
+            ->execute();
+
+    }
 }

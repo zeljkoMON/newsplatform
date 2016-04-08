@@ -25,8 +25,8 @@ class SuccessController extends Controller
                 'admin' => $user->getAdmin()));
         }
 
-        return new Response(
-            '<html><body>' . 'You need to login' . '</body></html>');
+        return $this->render('not-logged/index.html.twig', array(
+            'msg' => 'You need to log in order to access this page'));
 
     }
     /**
@@ -35,7 +35,7 @@ class SuccessController extends Controller
      */
     public function notLoggedAction()
     {
-        return new Response(
-            '<html><body>' . 'You need to login' . '</body></html>');
+        return $this->render('not-logged/index.html.twig', array(
+            'msg' => 'You need to log in order to access this page'));
     }
 }

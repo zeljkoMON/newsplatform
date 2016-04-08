@@ -14,11 +14,9 @@ class TestController extends Controller
      */
     public function indexAction()
     {
-        $authenticator = $this->get('app.authenticator');
-
 
         return new Response(
-            '<html><body>' . var_dump($authenticator->getUser()) . '</body></html>');
+            '<html><body>' . 'weee' . '</body></html>');
 
 
     }

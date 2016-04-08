@@ -95,7 +95,7 @@ class LoginController extends Controller
         } else return new Response(
             '<html><body>' . 'Due excessive login attempts you are unable to log for 5 minutes' . '</body></html>');
 
-        return $this->render('default/login.html.twig', array(
+        return $this->render('login/index.html.twig', array(
             'form' => $form->createView(), 'msg' => $msg));
     }
 

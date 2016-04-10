@@ -172,10 +172,10 @@ class Users
 
     public function copyPendingUser(PendingUser $pendingUser)
     {
-        $this->setUsername($pendingUser->getUsername());
-        $this->setPassword($pendingUser->getPassword());
-        $this->setEmail($pendingUser->getEmail());
-        $this->setSalt($pendingUser->getSalt());
+        $this->username = $pendingUser->getUsername();
+        $this->password = $pendingUser->getPassword();
+        $this->salt = $pendingUser->getSalt();
+        $this->email = $pendingUser->getEmail();
         $this->setAdmin(0);
 
         return $this;

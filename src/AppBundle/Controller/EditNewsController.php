@@ -75,8 +75,11 @@ class EditNewsController extends Controller
                 if ($form->get('edit')->isClicked()) {
                     $news->removeAllTags();
                     $tagsStr = $form->get('tags')->getData();
+                    $tagsStr = preg_replace('/[^A-Za-z0-9\-, ]/', '', $tagsStr);
                     $tags = explode(',', $tagsStr);
+
                     foreach ($tags as $value) {
+
                         $tag = $em->getRepository('AppBundle:Tag')->findByTag($value);
                         if ($tag <> null) {
                             $news->addTag($tag);
@@ -88,6 +91,8 @@ class EditNewsController extends Controller
                         }
                         $em->getRepository('AppBundle:News')
                             ->updateNews($news);
+                        $em->getRepository('AppBundle:Tag')
+                            ->removeOrphans();
                     }
                     return $this->redirect('/user-panel');
                 }

@@ -1,15 +1,18 @@
-    <div>
-        <a href="/account">Change password</a>
-    </div>
-    <div>
-        <a href="/add-news">Add news</a>
-    </div>
-    <div>
-        <a href="/edit-news"> Edit news </a>
-    </div>
-    <div>
-        <a href="/search-author"> Search by author </a>
-    </div>
-    {% if admin %}
-        <a href="/edit-users"> Edit users </a>
-    {% endif %}
+<div>
+    <a href="/">Home</a>
+</div>
+<div>
+    <a href="/search-author"> Search by author </a>
+</div>
+<div>
+    <a href="/add-news">Add news</a>
+</div>
+<div>
+    <a href="/edit-news"> Edit news </a>
+</div>
+<div>
+    <a href="/account">Change password</a>
+</div>
+{% if admin %}
+    <a href="/edit-users"> Edit users </a>
+{% endif %}

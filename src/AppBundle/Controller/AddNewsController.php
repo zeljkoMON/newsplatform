@@ -46,9 +46,11 @@ class AddNewsController extends Controller
 
                 $news->setDate(new \DateTime('now'));
                 $em = $this->getDoctrine()->getManager();
-                $data = $form->get('tags')->getData();
-                $tags = explode(',', $data);
+                $tagsStr = $form->get('tags')->getData();
+                $tagsStr = preg_replace('/[^A-Za-z0-9\-, ]/', '', $tagsStr);
+                $tags = explode(',', $tagsStr);
                 foreach ($tags as $value) {
+
                     $tag = $em->getRepository('AppBundle:Tag')->findByTag($value);
                     if ($tag <> null) {
                         $news->addTag($tag);
@@ -60,6 +62,8 @@ class AddNewsController extends Controller
                     }
                 }
                 $em->persist($news);
+                $em->getRepository('AppBundle:Tag')
+                    ->removeOrphans();
                 $em->flush();
                 return $this->redirect('/user-panel');
 
@@ -67,6 +71,8 @@ class AddNewsController extends Controller
         }
 
         return $this->render('add-news/index.html.twig', array(
-            'form' => $form->createView(), 'username' => $user->getUsername()));
+            'form' => $form->createView(),
+            'username' => $user->getUsername(),
+            'admin' => $user->getAdmin()));
     }
 }

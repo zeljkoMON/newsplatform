@@ -45,9 +45,8 @@ class CreateAccountController extends Controller
             if ($form->get('email')->getData() == $form->get('confirmEmail')->getData()) {
                 if ($form->get('password')->getData() == $form->get('confirmPass')->getData()) {
                     $em = $this->getDoctrine()->getManager();
-
-                    $username = $pendingUser->getUsername();
-                    $password = $pendingUser->getPassword();
+                    $username = $form->get('username')->getData();
+                    $password = $form->get('password')->getData();
 
                     $secret = $this->container->getParameter('secret');
                     $token = new RegistrationToken($username, $secret);

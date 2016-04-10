@@ -1,39 +1,59 @@
-{# app/Resources/views/default/news.html.twig #}
-<div align="center">
-    Welcome {{ username }}!!!
-    {{ form_start(form) }}
-    {{ form_errors(form) }}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        {{ source('css/news.css') }}
+    </style>
+</head>
 
-    <div>
-        {{ form_label(form.author) }}
-        {{ form_errors(form.author) }}
-        {{ form_widget(form.author, { 'attr':{'readonly':'readonly'} }) }}
+<body>
+<div id="page">
+    <div id="header">
+        {% include ':default:header.html.twig' %}
     </div>
+    {% if username %}
+        <div id="user">
+            Welcome {{ username }}!
+            {% include 'default/user-panel.html.twig' %}
+        </div>
+    {% endif %}
 
-    <div>
-        {{ form_label(form.title) }}
-        {{ form_errors(form.title) }}
-        {{ form_widget(form.title) }}
+    <div id="news">
+        <div id="add_news_form_labels">
+            <div class="div_padding">
+                Author:
+            </div>
+            <div class="div_padding">
+                Title:
+            </div>
+            <div class="div_padding">
+                Text:
+            </div>
+            <div class="div_padding">
+                Tags:
+            </div>
+        </div>
+        <div id="add_news_form">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+            <div>
+                {{ form_widget(form.author, { 'attr':{'readonly':'readonly'} }) }}
+            </div>
+            <div>
+                {{ form_widget(form.title, { 'attr':{'placeholder':'Sample title'} }) }}
+            </div>
+            <div>
+                {{ form_widget(form.text, { 'attr': {'rows' : 30,'cols' : 30 }} ) }}
+            </div>
+            <div>
+                {{ form_widget(form.tags) }}
+            </div>
+            Tag format: tag1,tag2,tag3...
+            <div>
+                {{ form_widget(form.save) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
     </div>
-
-    <div>
-        {{ form_label(form.text) }}
-        {{ form_errors(form.text) }}
-        {{ form_widget(form.text, { 'attr': {
-            'rows' : '30',
-            'cols' : '30' }} ) }}
-    </div>
-
-    <div>
-        {{ form_label(form.tags) }}
-        {{ form_errors(form.tags) }}
-        {{ form_widget(form.tags) }}
-    </div>
-    Tag format: tag1,tag2,tag3...
-    <div>
-        {{ form_widget(form.save) }}
-    </div>
-
-    {{ form_end(form) }}
-
 </div>
+</body>

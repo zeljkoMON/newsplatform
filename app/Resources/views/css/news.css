@@ -14,13 +14,14 @@
 
 #news {
     position: absolute;
+    display: inline;
     top: 40px;
     left: 150px;
     width: 700px;
     background-color: #5eb5e0;
     text-align: center;
+    padding-top: 10px;
     padding-bottom: 10px;
-    align-self: center;
 
 }
 
@@ -86,5 +87,21 @@
     padding-top: 10px;
     padding-bottom: 10px;
     align-self: center;
+}
 
+#add_news_form {
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 auto;
+}
+
+#add_news_form_labels {
+    display: inline-block;
+    vertical-align: top;
+    text-align: right;
+    margin: 0 auto;
+}
+
+.div_padding {
+    padding-bottom: 2px;
 }

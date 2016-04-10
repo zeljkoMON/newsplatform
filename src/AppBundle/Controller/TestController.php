@@ -14,9 +14,12 @@ class TestController extends Controller
      */
     public function indexAction()
     {
+        $value = 'megerec presec';
+        $value = preg_replace('/[^A-Za-z0-9\-, ]/', '', $value);
+
 
         return new Response(
-            '<html><body>' . 'weee' . '</body></html>');
+            '<html><body>' . var_dump($value) . '</body></html>');
 
 
     }

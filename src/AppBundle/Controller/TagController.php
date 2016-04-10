@@ -16,11 +16,18 @@ class TagController extends Controller
      */
     public function indexAction($tag)
     {
+        $authenticator = $this->get('app.authenticator');
+        $user = $authenticator->getUser();
+
         $em = $this->getDoctrine()->getRepository('AppBundle:Tag');
         $tagsList = $em->findByTag($tag);
-
-
+        if ($tagsList == null) {
+            $msg = 'Content not found';
+            return $this->render('tags/index.html.twig', array('msg' => $msg));
+        }
         return $this->render('tags/index.html.twig', array(
-            'newsList' => $tagsList->getNews()->toArray()));
+            'newsList' => $tagsList->getNews()->toArray(),
+            'username' => $user->getUsername(),
+            'admin' => $user->getAdmin()));
     }
 }

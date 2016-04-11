@@ -34,41 +34,24 @@
             </div>
         </div>
         <div id="edit_news_form">
+            {{ form_start(form) }}
             <div>
-                <input title="author"
-                       type="text"
-                       id="form_author"
-                       name="form[author]"
-                       readonly="readonly"
-                >
+                {{ form_widget(form.author, { 'attr':{'readonly':'readonly'}}) }}
             </div>
             <div>
-                <input title="title"
-                       type="text"
-                       id="form_title"
-                       name="form[title]"
-                       required="required"
-                >
+                {{ form_widget(form.title) }}
             </div>
             <div>
-                <input title="Text"
-                       type="text"
-                       id="form_text"
-                       name="form[text]"
-                       required="required"
-                >
+                {{ form_widget(form.text) }}
             </div>
             <div>
-                <input title="Tags"
-                       type="text"
-                       id="form_tags"
-                       name="form[tags]"
-                >
+                {{ form_widget(form.tags) }}
                 <div>
                     Tag format: tag1,tag2...
                     no special characters
                 </div>
             </div>
+
             <div>
                 {{ form_widget(form.edit) }} {{ form_widget(form.delete) }}
             </div>
@@ -79,6 +62,7 @@
                     {{ form_row(comment.post,{ 'label': 'Delete' } ) }}
                 {% endif %}
             {% endfor %}
+            {{ form_end(form) }}
         </div>
     </div>
 </div>

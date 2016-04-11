@@ -60,7 +60,9 @@ class AccountController extends Controller
                 }
             }
             return $this->render('account/index.html.twig', array(
-                'form' => $form->createView()));
+                'form' => $form->createView(),
+                'admin' => $user->getAdmin(),
+                'username' => $user->getUsername()));
         } else return $this->redirect('/not-logged');
     }
 }

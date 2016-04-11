@@ -3,6 +3,7 @@
 <head>
     <style>
         {{ source('css/news.css') }}
+        {{ source('css/classes.css') }}
     </style>
 </head>
 
@@ -36,16 +37,25 @@
         <div id="edit_news_form">
             {{ form_start(form) }}
             <div>
-                {{ form_widget(form.author, { 'attr':{'readonly':'readonly'}}) }}
+                {{ form_widget(form.author, {'attr':
+                    {'readonly':'readonly',
+                        'class':'news_text'
+                    }}) }}
             </div>
             <div>
-                {{ form_widget(form.title) }}
+                {{ form_widget(form.title, { 'attr':
+                    {'class':'news_text'
+                    }}) }}
             </div>
             <div>
-                {{ form_widget(form.text) }}
+                {{ form_widget(form.text, { 'attr':
+                    {'class':'news_textarea'
+                    }}) }}
             </div>
             <div>
-                {{ form_widget(form.tags) }}
+                {{ form_widget(form.tags, { 'attr':
+                    {'class':'news_text'
+                    }}) }}
                 <div>
                     Tag format: tag1,tag2...
                     no special characters

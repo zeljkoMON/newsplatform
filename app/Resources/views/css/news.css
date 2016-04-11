@@ -102,9 +102,6 @@
     margin: 0 auto;
 }
 
-.div_padding {
-    padding-bottom: 2px;
-}
 #change_password_form {
     display: inline-block;
     vertical-align: top;

@@ -3,6 +3,7 @@
 <head>
     <style>
         {{ source('css/news.css') }}
+        {{ source('css/classes.css') }}
     </style>
 </head>
 
@@ -38,23 +39,34 @@
             {{ form_errors(form) }}
 
             <div>
-                {{ form_widget(form.username,{ 'attr':{'readonly':'readonly'} }) }}
+                {{ form_widget(form.username, { 'attr':
+                    {'readonly':'readonly',
+                        'class' : 'news_text'
+                    }}) }}
             </div>
 
             <div>
-                {{ form_widget(form.password) }}
+                {{ form_widget(form.password, { 'attr':
+                    {'class' : 'news_text'
+                    }}) }}
             </div>
 
             <div>
-                {{ form_widget(form.newPass) }}
+                {{ form_widget(form.newPass, { 'attr':
+                    {'class' : 'news_text'
+                    }}) }}
             </div>
 
             <div>
-                {{ form_widget(form.confirmPass) }}
+                {{ form_widget(form.confirmPass, { 'attr':
+                    {'class' : 'news_text'
+                    }}) }}
             </div>
 
             <div>
-                {{ form_widget(form.changePass) }}
+                {{ form_widget(form.changePass, { 'attr':
+                    {'class' : 'news_text'
+                    }}) }}
             </div>
 
             {{ form_end(form) }}

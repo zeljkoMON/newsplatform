@@ -34,7 +34,10 @@
                     <div>
                         Tags:
                         {% for key,tags in value.tags %}
-                            <a href="/tags/{{ tags.tag }}">{{ tags.tag }} </a>,
+                            <a href="/tags/{{ tags.tag }}">{{ tags.tag }} </a>
+                            {% if loop.index < value.tags|length %}
+                                ,
+                            {% endif %}
                         {% endfor %}
                     </div>
                     Author: <a href="/authors/{{ value.author }}">{{ value.author }}</a>

@@ -30,7 +30,7 @@
             <div class="div_padding">
                 Text:
             </div>
-            <div class="div_padding">
+            <div id="tag_label" class="div_padding">
                 Tags:
             </div>
         </div>
@@ -38,16 +38,24 @@
             {{ form_start(form) }}
             {{ form_errors(form) }}
             <div>
-                {{ form_widget(form.author, { 'attr':{'readonly':'readonly'} }) }}
+                {{ form_widget(form.author, { 'attr':{
+                    'readonly':'readonly',
+                    'class':'news_text'
+                } }) }}
             </div>
             <div>
-                {{ form_widget(form.title, { 'attr':{'placeholder':'Sample title'} }) }}
+                {{ form_widget(form.title, { 'attr':{
+                    'placeholder':'Sample title',
+                    'class':'news_text'
+                } }) }}
             </div>
             <div>
-                {{ form_widget(form.text, { 'attr': {'rows' : 30,'cols' : 30 }} ) }}
+                {{ form_widget(form.text, { 'attr': {
+                    'class':'news_textarea'  }} ) }}
             </div>
             <div>
-                {{ form_widget(form.tags) }}
+                {{ form_widget(form.tags,  { 'attr': {
+                    'class':'news_text'  }}) }}
             </div>
             Tag format: tag1,tag2,tag3...
             <div>

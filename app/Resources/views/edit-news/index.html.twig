@@ -31,7 +31,10 @@
                 <div>
                     Tags:
                     {% for key,tags in value.tags %}
-                        {{ tags.tag }},
+                        {{ tags.tag }}
+                        {% if loop.index < value.tags|length %}
+                            ,
+                        {% endif %}
                     {% endfor %}
                 </div>
                 <a href="/edit-news/{{ value.id }}"> Edit </a>

@@ -3,7 +3,6 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Users;
 use AppBundle\Form\Type\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

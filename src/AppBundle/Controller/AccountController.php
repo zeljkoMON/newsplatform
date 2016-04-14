@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AccountController extends Controller
 {
+
     /**
      * @Route("/account")
      * @param Request $request

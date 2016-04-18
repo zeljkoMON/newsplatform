@@ -237,7 +237,9 @@ class News
         foreach ($this->tags as $tag) {
             $tags_array[] = $tag->getTag();
         }
-        return implode(',', $tags_array);
+        if (empty($tags_array)){
+            return null;
+        } else return implode(',', $tags_array);
 
     }
 }
